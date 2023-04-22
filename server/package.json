@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.11",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node": "^19.1.0",
+    "node-mysql": "^0.4.2",
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.26.0",
+    "socket.io": "^4.5.3"
+  }
+}
