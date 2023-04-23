@@ -8,7 +8,7 @@ import axios from 'axios'
 // })
 
 
-const API_URL = 'http://10.92.16.48:5000';
+const API_URL = 'http://192.168.1.109:5000';
 
 sendIds = async (params) => {
 

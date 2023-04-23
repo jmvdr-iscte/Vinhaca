@@ -12,12 +12,13 @@ import { VictoryLine, VictoryChart, VictoryTheme, VictoryLegend } from "victory-
 const AppNavigator = require("./app.navigator")
 const {Graph}= require("./screens/Graph")
 const AuthScreen=require("./screens/AuthScreen")
+import Alert from "./screens/Alerts"
 
 
 function App() {
 return(
 
-      <AppNavigator/>
+  <AppNavigator/>
 
   );
 }
