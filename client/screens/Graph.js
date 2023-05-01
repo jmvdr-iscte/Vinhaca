@@ -61,14 +61,20 @@ function Graph(props: GraphProps) {
   }
   */
   const Navegate = () => props.navigation.navigate('Home');
+
   const [temperature, setTemperature] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [density, setDensity] = useState([]);
   const [liquidLevel, setliquidLevel] = useState([]);
-  const [lastTemperatureCheckTime, setLastTemperatureCheckTime] =
-    useState(null);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogBodyText, setDialogBodyText] = useState('');
+  const [dialogImage, setDialogImage] = useState(
+    require('../assets/select.png'),
+  );
+
+  const [lastTemperatureCheckTime, setLastTemperatureCheckTime] =
+    useState(null);
   const [lastLiquidLevelCheckTime, setLastLiquidLevelCheckTime] =
     useState(null);
   const [lastDensityCheckTime, setLastDensityCheckTime] = useState(null);
@@ -93,12 +99,15 @@ function Graph(props: GraphProps) {
     } catch (error) {
       console.log('Error:', error.message);
     }
+
     const socket2 = socketIO(`${API_URL}:5002`, {
       transports: ['websocket'],
     });
+
     socket2.on('connection', () => {
       console.log('connected');
     });
+
     try {
       socket2.on('message', density => {
         setDensity(density);
@@ -137,10 +146,12 @@ function Graph(props: GraphProps) {
         console.log(temperatureAlert);
         setDialogTitle('Way too hot');
         setDialogBodyText('Please get some fucking water');
+        setDialogImage(require('../assets/high_temperature.png'));
         handleModal();
       } else if (temperatureAlert < 20) {
         setDialogTitle('Way too cold');
         setDialogBodyText('Please heat that shit up');
+        setDialogImage(require('../assets/low_temperature.png'));
         handleModal();
       }
       setLastTemperatureCheckTime(now);
@@ -149,15 +160,17 @@ function Graph(props: GraphProps) {
 
   const checkLiquidLevel = liquidLevelAlert => {
     const now = Date.now();
-    if (!lastLiquidLevelCheckTime || now - lastLiquidLevelCheckTime >= 120000) {
+    if (!lastLiquidLevelCheckTime || now - lastLiquidLevelCheckTime >= 125000) {
       if (liquidLevelAlert > 40) {
         console.log(liquidLevelAlert);
         setDialogTitle('Way too high');
         setDialogBodyText('Please get something i dont know');
+        setDialogImage(require('../assets/high_LiquidLevel.png'));
         handleModal();
       } else if (liquidLevelAlert < 20) {
         setDialogTitle('Way too low');
         setDialogBodyText('Please make it make it higher');
+        setDialogImage(require('../assets/low_LiquidLevel.png'));
         handleModal();
       }
       setLastLiquidLevelCheckTime(now);
@@ -166,15 +179,17 @@ function Graph(props: GraphProps) {
 
   const checkDensity = densityAlert => {
     const now = Date.now();
-    if (!lastDensityCheckTime || now - lastDensityCheckTime >= 120000) {
+    if (!lastDensityCheckTime || now - lastDensityCheckTime >= 130000) {
       if (densityAlert > 40) {
         console.log(densityAlert);
         setDialogTitle('Way too dense');
         setDialogBodyText('Please get something i dont know');
+        setDialogImage(require('../assets/high_density.png'));
         handleModal();
       } else if (densityAlert < 20) {
         setDialogTitle('Way too not dense');
         setDialogBodyText('Please make it more dense');
+        setDialogImage(require('../assets/low_density.png'));
         handleModal();
       }
       setLastDensityCheckTime(now);
@@ -236,18 +251,13 @@ function Graph(props: GraphProps) {
         <Modal.Container>
           <Modal.Header title={dialogTitle} />
           <Modal.Body>
-            <Image
-              source={require('../assets/cartavinhos1.png')}
-              style={styles.image}
-            />
+            <Image source={dialogImage} style={styles.image} />
             <Text style={styles.text}>{dialogBodyText}</Text>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              style={styles.button}
-              title="I agree"
-              onPress={handleModal}
-            />
+            <Button style={styles.button} onPress={handleModal}>
+              <Text>{'OK'}</Text>
+            </Button>
           </Modal.Footer>
         </Modal.Container>
       </Modal>
