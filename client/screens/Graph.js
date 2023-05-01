@@ -5,7 +5,7 @@ import {Component} from 'react';
 import {useState, useEffect} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View, Text, Pressable, TouchableOpacity} from 'react-native';
+import {View, Text, Pressable, TouchableOpacity, Image} from 'react-native';
 import socketIO from 'socket.io-client';
 import {LineChart, Grid, contentInset} from 'react-native-svg';
 import {StyleSheet} from 'react-native';
@@ -17,19 +17,19 @@ import {
 } from 'victory-native';
 import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
-import Alerts from './Alerts';
+import {Modal} from './ModalAlerts';
 
-const API_URL = 'http://192.168.1.109';
+const API_URL = 'http://192.168.1.115';
 
 interface GraphProps {
   navigation: any;
 }
-let value = null;
+//let value = null;
 
-const getProductionId = () => {
+/*const getProductionId = () => {
   const [productionID, setProductionID] = useState('');
   useEffect(() => {
-    async function fetchData() {
+    async function fetchTemperature() {
       try {
         value = await AsyncStorage.getItem('IDproducao');
         setProductionID(value);
@@ -37,10 +37,10 @@ const getProductionId = () => {
         console.log(err);
       }
     }
-    fetchData();
+    fetchTemperature();
   }, []);
 };
-
+*/
 onWineTransfer = async () => {
   try {
     let wineID = value;
@@ -53,15 +53,27 @@ onWineTransfer = async () => {
 };
 
 function Graph(props: GraphProps) {
-  
-  getProductionId();
-  if (value != null) {
+  //getProductionId();
+  /* if (value != null) {
     console.log(value);
     onWineTransfer().then(() => {});
     value = null;
   }
+  */
   const Navegate = () => props.navigation.navigate('Home');
-  const [data, setData] = useState([]);
+  const [temperature, setTemperature] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [density, setDensity] = useState([]);
+  const [liquidLevel, setliquidLevel] = useState([]);
+  const [lastTemperatureCheckTime, setLastTemperatureCheckTime] =
+    useState(null);
+  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogBodyText, setDialogBodyText] = useState('');
+  const [lastLiquidLevelCheckTime, setLastLiquidLevelCheckTime] =
+    useState(null);
+  const [lastDensityCheckTime, setLastDensityCheckTime] = useState(null);
+
+  const handleModal = () => setIsModalVisible(() => !isModalVisible);
 
   useEffect(() => {
     const socket = socketIO(`${API_URL}:5001`, {
@@ -70,49 +82,117 @@ function Graph(props: GraphProps) {
     socket.on('connection', () => {
       console.log('connected');
     });
-
-    socket.on('message', data => {
-      setData(data);
-      console.log(data.length);
-    });
-  }, []);
-
-  const [density, setDensity] = useState([]);
-  useEffect(() => {
+    try {
+      socket.on('message', temperature => {
+        console.log(temperature);
+        setTemperature(temperature);
+        if (temperature.length > 0) {
+          checkTemperature(temperature[temperature.length - 1].y);
+        }
+      });
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
     const socket2 = socketIO(`${API_URL}:5002`, {
       transports: ['websocket'],
     });
     socket2.on('connection', () => {
       console.log('connected');
     });
-
-    socket2.on('message', density => {
-      setDensity(density);
-    });
-  }, []);
-
-  const [liquidLevel, setliquidLevel] = useState([]);
-
-  useEffect(() => {
+    try {
+      socket2.on('message', density => {
+        setDensity(density);
+        if (density.length > 0) {
+          checkDensity(density[density.length - 1].y);
+        }
+      });
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
     const socket3 = socketIO(`${API_URL}:5003`, {
       transports: ['websocket'],
     });
 
-    socket3.on('message', liquidLevel => {
-      setliquidLevel(liquidLevel);
-      console.log(liquidLevel.length);
-    });
+    try {
+      socket3.on('message', liquidLevel => {
+        setliquidLevel(liquidLevel);
+        if (liquidLevel.length > 0) {
+          checkLiquidLevel(liquidLevel[liquidLevel.length - 1].y);
+        }
+      });
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
+    return () => {
+      socket.disconnect();
+      socket2.disconnect();
+      socket3.disconnect();
+    };
   }, []);
 
+  const checkTemperature = temperatureAlert => {
+    const now = Date.now();
+    if (!lastTemperatureCheckTime || now - lastTemperatureCheckTime >= 120000) {
+      if (temperatureAlert > 40) {
+        console.log(temperatureAlert);
+        setDialogTitle('Way too hot');
+        setDialogBodyText('Please get some fucking water');
+        handleModal();
+      } else if (temperatureAlert < 20) {
+        setDialogTitle('Way too cold');
+        setDialogBodyText('Please heat that shit up');
+        handleModal();
+      }
+      setLastTemperatureCheckTime(now);
+    }
+  };
+
+  const checkLiquidLevel = liquidLevelAlert => {
+    const now = Date.now();
+    if (!lastLiquidLevelCheckTime || now - lastLiquidLevelCheckTime >= 120000) {
+      if (liquidLevelAlert > 40) {
+        console.log(liquidLevelAlert);
+        setDialogTitle('Way too high');
+        setDialogBodyText('Please get something i dont know');
+        handleModal();
+      } else if (liquidLevelAlert < 20) {
+        setDialogTitle('Way too low');
+        setDialogBodyText('Please make it make it higher');
+        handleModal();
+      }
+      setLastLiquidLevelCheckTime(now);
+    }
+  };
+
+  const checkDensity = densityAlert => {
+    const now = Date.now();
+    if (!lastDensityCheckTime || now - lastDensityCheckTime >= 120000) {
+      if (densityAlert > 40) {
+        console.log(densityAlert);
+        setDialogTitle('Way too dense');
+        setDialogBodyText('Please get something i dont know');
+        handleModal();
+      } else if (densityAlert < 20) {
+        setDialogTitle('Way too not dense');
+        setDialogBodyText('Please make it more dense');
+        handleModal();
+      }
+      setLastDensityCheckTime(now);
+    }
+  };
+
   return (
-  
-   <View style={styles.container}>
-      <VictoryChart width={500} theme={VictoryTheme.material} height={400}>
+    <View style={styles.container}>
+      <VictoryChart
+        width={400}
+        theme={VictoryTheme.material}
+        height={400}
+        domain={{x: [0, 60], y: [0, 120]}}>
         <VictoryLine
           style={{
             data: {stroke: '#c43a32'},
           }}
-          data={data}
+          data={temperature}
           x="x"
           y="y"
         />
@@ -152,11 +232,25 @@ function Graph(props: GraphProps) {
       <Button onPress={() => props.navigation.navigate('StarRatingModal')}>
         <Text>{'How good was the wine?'}</Text>
       </Button>
-      <Button onPress={() => setShowAlerts(true)}>
-        <Text>{'Press for alert'}</Text>
-      </Button>
-
-
+      <Modal isVisible={isModalVisible}>
+        <Modal.Container>
+          <Modal.Header title={dialogTitle} />
+          <Modal.Body>
+            <Image
+              source={require('../assets/cartavinhos1.png')}
+              style={styles.image}
+            />
+            <Text style={styles.text}>{dialogBodyText}</Text>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              style={styles.button}
+              title="I agree"
+              onPress={handleModal}
+            />
+          </Modal.Footer>
+        </Modal.Container>
+      </Modal>
     </View>
   );
 }
@@ -169,5 +263,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f5fcff',
   },
-  button: {},
+  button: {
+    backgroundColor: '#2f4f4f',
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+  },
 });

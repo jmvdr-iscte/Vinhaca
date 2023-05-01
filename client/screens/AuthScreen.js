@@ -3,12 +3,8 @@ import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, P
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 
-// const api = axios.create({
-//     baseURL:'http://192.168.1.124:5000/userIds'
-// })
 
-
-const API_URL = 'http://192.168.1.109:5000';
+const API_URL = 'http://192.168.1.44:5000';
 
 sendIds = async (params) => {
 

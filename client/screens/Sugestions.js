@@ -20,7 +20,7 @@ interface SugestionsProps{
   route: any;
 }
 
-const API_URL="http://192.168.1.109:5000"
+const API_URL="http://192.168.1.44:5000"
 
 module.exports= Sugestions=(props: SugestionsProps) =>{
 
