@@ -17,7 +17,7 @@ const AuthScreen=require("./screens/AuthScreen")
 function App() {
 return(
 
-      <AppNavigator/>
+  <AppNavigator/>
 
   );
 }

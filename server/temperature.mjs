@@ -47,17 +47,11 @@ let timeChange
 console.log("Temperature on")
 
 server.on("connection",(socket)=>{
-
-   
-   
     console.log("connected")
     if(timeChange) clearInterval(timeChange)
 
    
-  
-  
-   
-    setInterval(() =>socket.emit("message",generateData()), 1000)
+    setInterval(() =>socket.emit("message",generateData()), 2*30*1000)
   })
 
 httpServer.listen(port,'0.0.0.0');
