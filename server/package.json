@@ -8,7 +8,7 @@
     "mysql2": "^2.3.3",
     "node": "^19.1.0",
     "node-mysql": "^0.4.2",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.22",
     "sequelize": "^6.26.0",
     "socket.io": "^4.5.3"
   }

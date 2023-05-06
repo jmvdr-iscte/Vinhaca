@@ -20,7 +20,7 @@ import ProductionModal from './ProductionModal';
 interface RecipeScreenProps {
   navigation: any;
 }
-const API_URL = "http://10.92.16.48:5000"
+const API_URL = "http://192.168.1.44:5000"
 
 module.exports = RecipeScreen = (props: RecipeScreenProps) => {
 
