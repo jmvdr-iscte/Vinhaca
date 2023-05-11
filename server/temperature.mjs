@@ -14,7 +14,7 @@ var SensorData={
 
 }
 function generateData(){
-  var  randomTemperature = Math.floor(20 +Math.random() * 40)
+  var  randomTemperature = Math.floor(20 +Math.random() * 0)
 
     
     

@@ -19,7 +19,7 @@ import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
-const API_URL = 'http://10.92.8.43';
+const API_URL = 'http://192.168.1.42';
 
 interface GraphProps {
   navigation: any;
@@ -148,7 +148,7 @@ function Graph(props: GraphProps) {
         setDialogBodyText('Please get some fucking water');
         setDialogImage(require('../assets/high_temperature.png'));
         handleModal();
-      } else if (temperatureAlert < 20) {
+      } else if (temperatureAlert < 21) {
         setDialogTitle('Way too cold');
         setDialogBodyText('Please heat that shit up');
         setDialogImage(require('../assets/low_temperature.png'));
