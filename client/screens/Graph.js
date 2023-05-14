@@ -19,7 +19,8 @@ import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
-const API_URL = 'http://192.168.1.114';
+
+const API_URL = 'http://192.168.1.109';
 
 interface GraphProps {
   navigation: any;
@@ -58,7 +59,6 @@ function Graph(props: GraphProps) {
     console.log(value);
     onWineTransfer().then(() => {});
     value = null;
-    //VAI TOMA
   }
   */
 
@@ -209,6 +209,7 @@ function Graph(props: GraphProps) {
       setDialogBodyText('Please make it more dense');
       setDialogImage(require('../assets/low_density.png'));
       handleModal();
+
     }
   };
 

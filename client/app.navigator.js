@@ -18,6 +18,7 @@ const WinePage = require('./screens/WinePage');
 const {Navigator, Screen} = createStackNavigator();
 
 module.exports = AppNavigator = () => (
+
   <NavigationContainer>
     <Navigator screenOptions={{headerShown: false}} initialRouteName="Graph">
       <Screen name="AuthScreen" component={AuthScreen}></Screen>
@@ -36,3 +37,4 @@ module.exports = AppNavigator = () => (
     </Navigator>
   </NavigationContainer>
 );
+
