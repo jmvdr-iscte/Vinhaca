@@ -1,63 +1,77 @@
-import express from 'express'
-import http from 'http'
-import * as socketio from 'socket.io'
-//import { MysqlConnection } from './databaseConnection.js';
+import express from "express";
+import http from "http";
+import * as socketio from "socket.io";
+import mysql from "mysql";
 
 const port = 5003;
-const app = express()
-const httpServer = http.createServer(app)
-let dataliquidLevel=[]
+const app = express();
+const httpServer = http.createServer(app);
+let dataLiquidLevel = [];
 
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "vinhaca_1_1",
+});
 
-var SensorData={
-    liquidLevel:0.0
-}
-function generateData(){
-  var  randomLiquidLevel = Math.floor(50 +Math.random() * 90)
+connection.connect((err) => {
+  if (err) {
+    console.error("Error connecting to database: ", err);
+    return;
+  }
+  console.log("Deu certo");
+});
 
-    
-    
-    
-    
-     SensorData={
-        liquidLevel:randomLiquidLevel,
+let currentRecordIndex = 0;
+
+function fetchData(callback) {
+  connection.query(
+    `SELECT Leitura FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao LIMIT ${currentRecordIndex}, 1`,
+    function (error, results, fields) {
+      if (error) throw error;
+      console.log("results:", results);
+      if (results.length === 1) {
+        const liquidLevel = results[0].Leitura;
+        if (dataLiquidLevel.length > 50) {
+          dataLiquidLevel.reverse();
+          dataLiquidLevel.pop();
+          dataLiquidLevel.reverse();
+        }
+        dataLiquidLevel.push({ x: new Date().getSeconds(), y: liquidLevel });
+        callback(dataLiquidLevel);
+      } else {
+        console.log(`No more records to fetch.`);
+      }
     }
-    
-    if(dataliquidLevel.length>50){
-        dataliquidLevel.reverse()
-        dataliquidLevel.pop()
-        dataliquidLevel.reverse()
-    }
-    
-    
-    dataliquidLevel.push({x: new Date().getMinutes, y: SensorData.liquidLevel})
-   // MysqlConnection(SensorData.liquidLevel,"LiquidLevel")
-
-    return(
-    dataliquidLevel
-)
+  );
+  currentRecordIndex++;
 }
 
 const server = new socketio.Server(httpServer, {
-    cors : {
-        origin: '*',
-    }
-})
-let timeChange
-console.log("Liquid Level on")
+  cors: {
+    origin: "*",
+  },
+});
 
-server.on("connection",(socket)=>{
+let timeChange;
+console.log("LiquidLevel on");
 
-   
-   
-    console.log("connected")
-    if(timeChange) clearInterval(timeChange)
+server.on("connection", (socket) => {
+  console.log("connected");
 
-   
-  
-  
-   
-    setInterval(() =>socket.emit("message",generateData()), 2*30*1000)
-  })
+  if (timeChange) clearInterval(timeChange);
 
-httpServer.listen(port,'0.0.0.0');
+  setInterval(
+    () => fetchData((data) => socket.emit("message", JSON.stringify(data))),
+    1000
+  );
+});
+
+server.on("connect_error", (socket) => {
+  console.log(socket.message);
+});
+
+httpServer.listen(port, () => {
+  console.log(`Server running`);
+});

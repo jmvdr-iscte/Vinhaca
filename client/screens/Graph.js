@@ -2,7 +2,7 @@ import * as Native from 'react-native';
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {Component} from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {View, Text, Pressable, TouchableOpacity, Image} from 'react-native';
@@ -58,9 +58,15 @@ function Graph(props: GraphProps) {
     console.log(value);
     onWineTransfer().then(() => {});
     value = null;
+    //VAI TOMA
   }
   */
+
   const Navegate = () => props.navigation.navigate('Home');
+
+  const liquidLevelInterval = useRef(null);
+  const densityInterval = useRef(null);
+  const temperatureInterval = useRef(null);
 
   const [temperature, setTemperature] = useState([]);
   const [density, setDensity] = useState([]);
@@ -73,12 +79,6 @@ function Graph(props: GraphProps) {
     require('../assets/select.png'),
   );
 
-  const [lastTemperatureCheckTime, setLastTemperatureCheckTime] =
-    useState(null);
-  const [lastLiquidLevelCheckTime, setLastLiquidLevelCheckTime] =
-    useState(null);
-  const [lastDensityCheckTime, setLastDensityCheckTime] = useState(null);
-
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
 
   useEffect(() => {
@@ -88,12 +88,18 @@ function Graph(props: GraphProps) {
     socket.on('connection', () => {
       console.log('connected');
     });
+
     try {
       socket.on('message', temperature => {
+        const parsedData = JSON.parse(temperature);
         console.log(temperature);
-        setTemperature(temperature);
-        if (temperature.length > 0) {
-          checkTemperature(temperature[temperature.length - 1].y);
+        setTemperature(parsedData);
+        if (parsedData.length > 0) {
+          if (!temperatureInterval.current) {
+            temperatureInterval.current = setInterval(() => {
+              checkTemperature(parsedData[parsedData.length - 1].y);
+            }, 1000);
+          }
         }
       });
     } catch (error) {
@@ -110,29 +116,51 @@ function Graph(props: GraphProps) {
 
     try {
       socket2.on('message', density => {
-        setDensity(density);
-        if (density.length > 0) {
-          checkDensity(density[density.length - 1].y);
+        const parsedData2 = JSON.parse(density);
+        setDensity(parsedData2);
+        if (parsedData2.length > 0) {
+          if (!densityInterval.current) {
+            densityInterval.current = setInterval(() => {
+              checkDensity(parsedData2[parsedData2.length - 1].y);
+            }, 1000);
+          }
         }
       });
     } catch (error) {
       console.log('Error:', error.message);
     }
+
     const socket3 = socketIO(`${API_URL}:5003`, {
       transports: ['websocket'],
     });
 
     try {
       socket3.on('message', liquidLevel => {
-        setliquidLevel(liquidLevel);
-        if (liquidLevel.length > 0) {
-          checkLiquidLevel(liquidLevel[liquidLevel.length - 1].y);
+        const parsedData3 = JSON.parse(liquidLevel);
+        setliquidLevel(parsedData3);
+        if (parsedData3.length > 0) {
+          if (!liquidLevelInterval.current) {
+            liquidLevelInterval.current = setInterval(() => {
+              checkLiquidLevel(parsedData3[parsedData3.length - 1].y);
+            }, 1000);
+          }
         }
       });
     } catch (error) {
       console.log('Error:', error.message);
     }
+
     return () => {
+      if (temperatureInterval.current) {
+        clearInterval(temperatureInterval.current);
+      }
+      if (densityInterval.current) {
+        clearInterval(densityInterval.current);
+      }
+      if (liquidLevelInterval.current) {
+        clearInterval(liquidLevelInterval.current);
+      }
+
       socket.disconnect();
       socket2.disconnect();
       socket3.disconnect();
@@ -140,59 +168,47 @@ function Graph(props: GraphProps) {
   }, []);
 
   const checkTemperature = temperatureAlert => {
-    const now = Date.now();
-    if (!lastTemperatureCheckTime || now - lastTemperatureCheckTime >= 120000) {
-      if (temperatureAlert > 40) {
-        console.log(temperatureAlert);
-        setDialogTitle('Way too hot');
-        setDialogBodyText('Please get some fucking water');
-        setDialogImage(require('../assets/high_temperature.png'));
-        handleModal();
-      } else if (temperatureAlert < 20) {
-        setDialogTitle('Way too cold');
-        setDialogBodyText('Please heat that shit up');
-        setDialogImage(require('../assets/low_temperature.png'));
-        handleModal();
-      }
-      setLastTemperatureCheckTime(now);
+    if (temperatureAlert > 30) {
+      console.log(temperatureAlert);
+      setDialogTitle('Way too hot');
+      setDialogBodyText('Please get some fucking water');
+      setDialogImage(require('../assets/high_temperature.png'));
+      handleModal();
+    } else if (temperatureAlert < 20) {
+      setDialogTitle('Way too cold');
+      setDialogBodyText('Please heat that shit up');
+      setDialogImage(require('../assets/low_temperature.png'));
+      handleModal();
     }
   };
 
   const checkLiquidLevel = liquidLevelAlert => {
-    const now = Date.now();
-    if (!lastLiquidLevelCheckTime || now - lastLiquidLevelCheckTime >= 125000) {
-      if (liquidLevelAlert > 40) {
-        console.log(liquidLevelAlert);
-        setDialogTitle('Way too high');
-        setDialogBodyText('Please get something i dont know');
-        setDialogImage(require('../assets/high_LiquidLevel.png'));
-        handleModal();
-      } else if (liquidLevelAlert < 20) {
-        setDialogTitle('Way too low');
-        setDialogBodyText('Please make it make it higher');
-        setDialogImage(require('../assets/low_LiquidLevel.png'));
-        handleModal();
-      }
-      setLastLiquidLevelCheckTime(now);
+    if (liquidLevelAlert > 20) {
+      console.log(liquidLevelAlert);
+      setDialogTitle('Way too high');
+      setDialogBodyText('Please get something i dont know');
+      setDialogImage(require('../assets/high_LiquidLevel.png'));
+      handleModal();
+    } else if (liquidLevelAlert < 2) {
+      setDialogTitle('Way too low');
+      setDialogBodyText('Please make it make it higher');
+      setDialogImage(require('../assets/low_LiquidLevel.png'));
+      handleModal();
     }
   };
 
   const checkDensity = densityAlert => {
-    const now = Date.now();
-    if (!lastDensityCheckTime || now - lastDensityCheckTime >= 130000) {
-      if (densityAlert > 40) {
-        console.log(densityAlert);
-        setDialogTitle('Way too dense');
-        setDialogBodyText('Please get something i dont know');
-        setDialogImage(require('../assets/high_density.png'));
-        handleModal();
-      } else if (densityAlert < 20) {
-        setDialogTitle('Way too not dense');
-        setDialogBodyText('Please make it more dense');
-        setDialogImage(require('../assets/low_density.png'));
-        handleModal();
-      }
-      setLastDensityCheckTime(now);
+    if (densityAlert > 20) {
+      console.log(densityAlert);
+      setDialogTitle('Way too dense');
+      setDialogBodyText('Please get something i dont know');
+      setDialogImage(require('../assets/high_density.png'));
+      handleModal();
+    } else if (densityAlert < 10) {
+      setDialogTitle('Way too not dense');
+      setDialogBodyText('Please make it more dense');
+      setDialogImage(require('../assets/low_density.png'));
+      handleModal();
     }
   };
 
@@ -204,6 +220,7 @@ function Graph(props: GraphProps) {
         height={400}
         domain={{x: [0, 60], y: [0, 120]}}>
         <VictoryLine
+          key={JSON.stringify(temperature)}
           style={{
             data: {stroke: '#c43a32'},
           }}
@@ -213,6 +230,7 @@ function Graph(props: GraphProps) {
         />
 
         <VictoryLine
+          key={JSON.stringify(density)}
           style={{
             data: {stroke: '#FFA500'},
           }}
@@ -221,10 +239,12 @@ function Graph(props: GraphProps) {
           y="y"
         />
         <VictoryLine
+          key={JSON.stringify(liquidLevel)}
           style={{
             data: {stroke: '#3346FF'},
           }}
           data={liquidLevel}
+          x="x"
           y="y"
         />
 
@@ -237,7 +257,7 @@ function Graph(props: GraphProps) {
           data={[
             {name: 'Temperature', symbol: {fill: '#c43a32'}},
             {name: 'LiquidLevel', symbol: {fill: '#3346FF'}},
-            {name: 'Density', symbol: {fill: '#FFA500'}},
+            {name: 'Turbity', symbol: {fill: '#FFA500'}},
           ]}
         />
       </VictoryChart>
