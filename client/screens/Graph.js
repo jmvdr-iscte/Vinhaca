@@ -2,7 +2,7 @@ import * as Native from 'react-native';
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {Component} from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {View, Text, Pressable, TouchableOpacity, Image} from 'react-native';
@@ -19,7 +19,7 @@ import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
-const API_URL = 'http://192.168.1.42';
+const API_URL = 'http://192.168.1.109';
 
 interface GraphProps {
   navigation: any;
@@ -62,6 +62,10 @@ function Graph(props: GraphProps) {
   */
   const Navegate = () => props.navigation.navigate('Home');
 
+  const liquidLevelInterval = useRef(null);
+  const densityInterval = useRef(null);
+  const temperatureInterval = useRef(null);
+
   const [temperature, setTemperature] = useState([]);
   const [density, setDensity] = useState([]);
   const [liquidLevel, setliquidLevel] = useState([]);
@@ -93,7 +97,12 @@ function Graph(props: GraphProps) {
         console.log(temperature);
         setTemperature(temperature);
         if (temperature.length > 0) {
-          checkTemperature(temperature[temperature.length - 1].y);
+          console.log(lastTemperatureCheckTime);
+          if (!temperatureInterval.current) {
+            temperatureInterval.current = setInterval(() => {
+              checkTemperature(temperature[temperature.length - 1].y);
+            }, 120000);
+          }
         }
       });
     } catch (error) {
@@ -112,7 +121,11 @@ function Graph(props: GraphProps) {
       socket2.on('message', density => {
         setDensity(density);
         if (density.length > 0) {
-          checkDensity(density[density.length - 1].y);
+          if (!densityInterval.current) {
+            densityInterval.current = setInterval(() => {
+              checkDensity(density[density.length - 1].y);
+            }, 125000);
+          }
         }
       });
     } catch (error) {
@@ -126,13 +139,27 @@ function Graph(props: GraphProps) {
       socket3.on('message', liquidLevel => {
         setliquidLevel(liquidLevel);
         if (liquidLevel.length > 0) {
-          checkLiquidLevel(liquidLevel[liquidLevel.length - 1].y);
+          if (!liquidLevelInterval.current) {
+            liquidLevelInterval.current = setInterval(() => {
+              checkLiquidLevel(liquidLevel[liquidLevel.length - 1].y);
+            }, 130000);
+          }
         }
       });
     } catch (error) {
       console.log('Error:', error.message);
     }
+
     return () => {
+      if (temperatureInterval.current) {
+        clearInterval(temperatureInterval.current);
+      }
+      if (densityInterval.current) {
+        clearInterval(densityInterval.current);
+      }
+      if (liquidLevelInterval.current) {
+        clearInterval(liquidLevelInterval.current);
+      }
       socket.disconnect();
       socket2.disconnect();
       socket3.disconnect();
@@ -140,29 +167,21 @@ function Graph(props: GraphProps) {
   }, []);
 
   const checkTemperature = temperatureAlert => {
-    const now = Date.now();
-    if (!lastTemperatureCheckTime || now - lastTemperatureCheckTime >= 120000) {
-      if (temperatureAlert > 40) {
-        console.log(temperatureAlert);
-        setDialogTitle('Way too hot');
-        setDialogBodyText('Please get some fucking water');
-        setDialogImage(require('../assets/high_temperature.png'));
-        handleModal();
-      } else if (temperatureAlert < 21) {
-        setDialogTitle('Way too cold');
-        setDialogBodyText('Please heat that shit up');
-        setDialogImage(require('../assets/low_temperature.png'));
-        handleModal();
-      }
-      setLastTemperatureCheckTime(now);
+    if (temperatureAlert > 40) {
+      setDialogTitle('Way too hot');
+      setDialogBodyText('Please get some fucking water');
+      setDialogImage(require('../assets/high_temperature.png'));
+      handleModal();
+    } else if (temperatureAlert < 21) {
+      setDialogTitle('Way too cold');
+      setDialogBodyText('Please heat that shit up');
+      setDialogImage(require('../assets/low_temperature.png'));
+      handleModal();
     }
   };
 
   const checkLiquidLevel = liquidLevelAlert => {
-    const now = Date.now();
-    if (!lastLiquidLevelCheckTime || now - lastLiquidLevelCheckTime >= 125000) {
-      if (liquidLevelAlert > 40) {
-        console.log(liquidLevelAlert);
+      if (liquidLevel > 40) {
         setDialogTitle('Way too high');
         setDialogBodyText('Please get something i dont know');
         setDialogImage(require('../assets/high_LiquidLevel.png'));
@@ -173,15 +192,10 @@ function Graph(props: GraphProps) {
         setDialogImage(require('../assets/low_LiquidLevel.png'));
         handleModal();
       }
-      setLastLiquidLevelCheckTime(now);
-    }
   };
 
   const checkDensity = densityAlert => {
-    const now = Date.now();
-    if (!lastDensityCheckTime || now - lastDensityCheckTime >= 130000) {
       if (densityAlert > 40) {
-        console.log(densityAlert);
         setDialogTitle('Way too dense');
         setDialogBodyText('Please get something i dont know');
         setDialogImage(require('../assets/high_density.png'));
@@ -191,11 +205,8 @@ function Graph(props: GraphProps) {
         setDialogBodyText('Please make it more dense');
         setDialogImage(require('../assets/low_density.png'));
         handleModal();
-      }
-      setLastDensityCheckTime(now);
     }
   };
-
   return (
     <View style={styles.container}>
       <VictoryChart
