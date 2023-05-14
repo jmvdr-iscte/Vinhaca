@@ -50,9 +50,6 @@ server.on("connection",(socket)=>{
     if(timeChange) clearInterval(timeChange)
 
    
-  
-  
-   
     setInterval(() =>socket.emit("message",generateData()),  2*30*1000)
   })
 
