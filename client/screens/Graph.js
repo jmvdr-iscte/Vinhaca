@@ -5,7 +5,7 @@ import {Component} from 'react';
 import {useState, useEffect, useRef} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View, Text, Pressable, TouchableOpacity, Image} from 'react-native';
+import {View, Text, Pressable, TouchableOpacity, Image, TextInput} from 'react-native';
 import socketIO from 'socket.io-client';
 import {LineChart, Grid, contentInset} from 'react-native-svg';
 import {StyleSheet} from 'react-native';
@@ -18,7 +18,6 @@ import {
 import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
-
 
 const API_URL = 'http://192.168.1.109';
 
@@ -63,6 +62,7 @@ function Graph(props: GraphProps) {
   */
 
   const Navegate = () => props.navigation.navigate('Home');
+  const [intervalDuration, setIntervalDuration] = useState(120000); 
 
   const liquidLevelInterval = useRef(null);
   const densityInterval = useRef(null);
@@ -94,11 +94,12 @@ function Graph(props: GraphProps) {
         const parsedData = JSON.parse(temperature);
         console.log(temperature);
         setTemperature(parsedData);
+        console.log(intervalDuration)
         if (parsedData.length > 0) {
           if (!temperatureInterval.current) {
             temperatureInterval.current = setInterval(() => {
               checkTemperature(parsedData[parsedData.length - 1].y);
-            }, 1000);
+            }, intervalDuration);
           }
         }
       });
@@ -122,7 +123,7 @@ function Graph(props: GraphProps) {
           if (!densityInterval.current) {
             densityInterval.current = setInterval(() => {
               checkDensity(parsedData2[parsedData2.length - 1].y);
-            }, 1000);
+            }, 120000);
           }
         }
       });
@@ -142,7 +143,7 @@ function Graph(props: GraphProps) {
           if (!liquidLevelInterval.current) {
             liquidLevelInterval.current = setInterval(() => {
               checkLiquidLevel(parsedData3[parsedData3.length - 1].y);
-            }, 1000);
+            }, 120000);
           }
         }
       });
@@ -165,7 +166,7 @@ function Graph(props: GraphProps) {
       socket2.disconnect();
       socket3.disconnect();
     };
-  }, []);
+  }, [intervalDuration]);
 
   const checkTemperature = temperatureAlert => {
     if (temperatureAlert > 30) {
@@ -174,7 +175,7 @@ function Graph(props: GraphProps) {
       setDialogBodyText('Please get some fucking water');
       setDialogImage(require('../assets/high_temperature.png'));
       handleModal();
-    } else if (temperatureAlert < 20) {
+    } else if (temperatureAlert < 25) {
       setDialogTitle('Way too cold');
       setDialogBodyText('Please heat that shit up');
       setDialogImage(require('../assets/low_temperature.png'));
@@ -209,12 +210,17 @@ function Graph(props: GraphProps) {
       setDialogBodyText('Please make it more dense');
       setDialogImage(require('../assets/low_density.png'));
       handleModal();
-
     }
   };
 
   return (
     <View style={styles.container}>
+      <Text>Interval Duration (ms):</Text>
+      <TextInput
+        value={intervalDuration.toString()}
+        onChangeText={text => setIntervalDuration(parseInt(text, 10))}
+        keyboardType="numeric"
+      />
       <VictoryChart
         width={400}
         theme={VictoryTheme.material}

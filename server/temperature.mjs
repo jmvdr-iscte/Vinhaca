@@ -2,12 +2,24 @@ import express from "express";
 import http from "http";
 import * as socketio from "socket.io";
 import mysql from "mysql";
+import dataPreparation from "./utils/dataPreparation.js";
 
 const port = 5001;
 const app = express();
 const httpServer = http.createServer(app);
 let dataTemperature = [];
-
+let temperatureCount = 0;
+/*
+function fixBullshit(dataTemperature) {
+  let updatedTemperature = [];
+  for (let i = 0; i < dataTemperature.length; i++) {
+    const { x, y } = dataTemperature[i];
+    const updatedObject = { x: x - 1, y };
+    updatedTemperature.push(updatedObject);
+  }
+  return updatedTemperature;
+}
+*/
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -34,11 +46,15 @@ function fetchData(callback) {
       if (results.length === 1) {
         const temperature = results[0].Leitura;
         if (dataTemperature.length > 50) {
+          dataTemperature = dataPreparation(dataTemperature);
           dataTemperature.reverse();
           dataTemperature.pop();
           dataTemperature.reverse();
         }
-        dataTemperature.push({ x: new Date().getSeconds(), y: temperature });
+        if (temperatureCount <= 50) {
+          temperatureCount++;
+        }
+        dataTemperature.push({ x: temperatureCount, y: temperature });
         callback(dataTemperature);
       } else {
         console.log(`No more records to fetch.`);
@@ -67,7 +83,6 @@ server.on("connection", (socket) => {
     1000 // fetch data every second
   );
 });
-
 
 server.on("connect_error", (socket) => {
   console.log(socket.message);

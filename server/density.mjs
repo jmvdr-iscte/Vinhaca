@@ -2,12 +2,13 @@ import express from "express";
 import http from "http";
 import * as socketio from "socket.io";
 import mysql from "mysql";
+import dataPreparation from "./utils/dataPreparation.js";
 
 const port = 5002;
 const app = express();
 const httpServer = http.createServer(app);
 let dataDensity = [];
-
+let densityCount = 0;
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -34,11 +35,15 @@ function fetchData(callback) {
       if (results.length === 1) {
         const density = results[0].Leitura;
         if (dataDensity.length > 50) {
+          dataDensity = dataPreparation(dataDensity);
           dataDensity.reverse();
           dataDensity.pop();
           dataDensity.reverse();
         }
-        dataDensity.push({ x: new Date().getSeconds(), y: density });
+        if (densityCount <= 50) {
+          densityCount++;
+        }
+        dataDensity.push({ x: densityCount, y: density });
         callback(dataDensity);
       } else {
         console.log(`No more records to fetch.`);
@@ -69,11 +74,9 @@ server.on("connection", (socket) => {
   );
 });
 
-
 server.on("connect_error", (socket) => {
   console.log(socket.message);
 });
-
 
 httpServer.listen(port, () => {
   console.log(`Server running`);

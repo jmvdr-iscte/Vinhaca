@@ -2,12 +2,13 @@ import express from "express";
 import http from "http";
 import * as socketio from "socket.io";
 import mysql from "mysql";
+import dataPreparation from "./utils/dataPreparation.js";
 
 const port = 5003;
 const app = express();
 const httpServer = http.createServer(app);
 let dataLiquidLevel = [];
-
+let liquidLevelCount = 0;
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -34,11 +35,15 @@ function fetchData(callback) {
       if (results.length === 1) {
         const liquidLevel = results[0].Leitura;
         if (dataLiquidLevel.length > 50) {
+          dataLiquidLevel = dataPreparation(dataLiquidLevel);
           dataLiquidLevel.reverse();
           dataLiquidLevel.pop();
           dataLiquidLevel.reverse();
         }
-        dataLiquidLevel.push({ x: new Date().getSeconds(), y: liquidLevel });
+        if (liquidLevelCount <= 50) {
+          liquidLevelCount++;
+        }
+        dataLiquidLevel.push({ x: liquidLevelCount, y: liquidLevel });
         callback(dataLiquidLevel);
       } else {
         console.log(`No more records to fetch.`);
@@ -64,7 +69,7 @@ server.on("connection", (socket) => {
 
   setInterval(
     () => fetchData((data) => socket.emit("message", JSON.stringify(data))),
-    1000
+    10000
   );
 });
 
