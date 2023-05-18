@@ -69,7 +69,7 @@ function Graph(props: GraphProps) {
   */
 
   const Navegate = () => props.navigation.navigate('Home');
-  const [intervalDuration, setIntervalDuration] = useState(120000);
+  // const [intervalDuration, setIntervalDuration] = useState(120000);
 
   const liquidLevelInterval = useRef(null);
   const densityInterval = useRef(null);
@@ -101,12 +101,11 @@ function Graph(props: GraphProps) {
         const parsedData = JSON.parse(temperature);
         console.log(temperature);
         setTemperature(parsedData);
-        console.log(intervalDuration);
         if (parsedData.length > 0) {
           if (!temperatureInterval.current) {
             temperatureInterval.current = setInterval(() => {
               checkTemperature(parsedData[parsedData.length - 1].y);
-            }, intervalDuration);
+            }, 10500);
           }
         }
       });
@@ -130,7 +129,7 @@ function Graph(props: GraphProps) {
           if (!densityInterval.current) {
             densityInterval.current = setInterval(() => {
               checkDensity(parsedData2[parsedData2.length - 1].y);
-            }, 120000);
+            }, 10500);
           }
         }
       });
@@ -150,7 +149,7 @@ function Graph(props: GraphProps) {
           if (!liquidLevelInterval.current) {
             liquidLevelInterval.current = setInterval(() => {
               checkLiquidLevel(parsedData3[parsedData3.length - 1].y);
-            }, 120000);
+            }, 10500);
           }
         }
       });
@@ -173,7 +172,7 @@ function Graph(props: GraphProps) {
       socket2.disconnect();
       socket3.disconnect();
     };
-  }, [intervalDuration]);
+  }, []);
 
   const checkTemperature = temperatureAlert => {
     if (temperatureAlert > 30) {
@@ -219,15 +218,16 @@ function Graph(props: GraphProps) {
       handleModal();
     }
   };
-
-  return (
-    <View style={styles.container}>
-      <Text>Interval Duration (ms):</Text>
+  /*
+  <Text>Interval Duration (ms):</Text>
       <TextInput
         value={intervalDuration.toString()}
-        onChangeText={text => setIntervalDuration(parseInt(text, 10))}
+        onChangeText={text => setIntervalDuration(parseInt(text))}
         keyboardType="numeric"
       />
+      */
+  return (
+    <View style={styles.container}>
       <VictoryChart
         width={400}
         theme={VictoryTheme.material}
