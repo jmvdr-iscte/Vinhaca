@@ -5,7 +5,14 @@ import {Component} from 'react';
 import {useState, useEffect, useRef} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View, Text, Pressable, TouchableOpacity, Image, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from 'react-native';
 import socketIO from 'socket.io-client';
 import {LineChart, Grid, contentInset} from 'react-native-svg';
 import {StyleSheet} from 'react-native';
@@ -19,7 +26,7 @@ import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
-const API_URL = 'http://192.168.1.109';
+const API_URL = 'http://192.168.1.47';
 
 interface GraphProps {
   navigation: any;
@@ -62,7 +69,7 @@ function Graph(props: GraphProps) {
   */
 
   const Navegate = () => props.navigation.navigate('Home');
-  const [intervalDuration, setIntervalDuration] = useState(120000); 
+  const [intervalDuration, setIntervalDuration] = useState(120000);
 
   const liquidLevelInterval = useRef(null);
   const densityInterval = useRef(null);
@@ -94,7 +101,7 @@ function Graph(props: GraphProps) {
         const parsedData = JSON.parse(temperature);
         console.log(temperature);
         setTemperature(parsedData);
-        console.log(intervalDuration)
+        console.log(intervalDuration);
         if (parsedData.length > 0) {
           if (!temperatureInterval.current) {
             temperatureInterval.current = setInterval(() => {

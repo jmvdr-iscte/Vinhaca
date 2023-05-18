@@ -28,18 +28,22 @@ let currentRecordIndex = 0;
 
 function fetchData(callback) {
   connection.query(
-    `SELECT Leitura FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao LIMIT ${currentRecordIndex}, 1`,
+    `SELECT Leitura, IDMedicao FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao DESC LIMIT 1`,
     function (error, results, fields) {
       if (error) throw error;
-      console.log("results:", results);
-      if (results.length === 1) {
-        const liquidLevel = results[0].Leitura;
+      if (results.length > 0) {
+        console.log(results);
+        console.log("results:", results[results.length - 1]);
+        console.log(results[results.length - 1].IDMedicao);
+        const liquidLevel = results[results.length - 1].Leitura;
         if (dataLiquidLevel.length > 50) {
           dataLiquidLevel = dataPreparation(dataLiquidLevel);
           dataLiquidLevel.reverse();
           dataLiquidLevel.pop();
           dataLiquidLevel.reverse();
+          results.length++;
         }
+
         if (liquidLevelCount <= 50) {
           liquidLevelCount++;
         }
@@ -50,7 +54,6 @@ function fetchData(callback) {
       }
     }
   );
-  currentRecordIndex++;
 }
 
 const server = new socketio.Server(httpServer, {

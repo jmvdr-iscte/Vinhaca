@@ -9,17 +9,7 @@ const app = express();
 const httpServer = http.createServer(app);
 let dataTemperature = [];
 let temperatureCount = 0;
-/*
-function fixBullshit(dataTemperature) {
-  let updatedTemperature = [];
-  for (let i = 0; i < dataTemperature.length; i++) {
-    const { x, y } = dataTemperature[i];
-    const updatedObject = { x: x - 1, y };
-    updatedTemperature.push(updatedObject);
-  }
-  return updatedTemperature;
-}
-*/
+
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -39,7 +29,7 @@ let currentRecordIndex = 0;
 
 function fetchData(callback) {
   connection.query(
-    `SELECT Leitura FROM medicao WHERE NomeSensor = 'Temperature' ORDER BY IDMedicao LIMIT ${currentRecordIndex}, 1`,
+    `SELECT Leitura FROM medicao WHERE NomeSensor = 'Temperature' ORDER BY IDMedicao DESC LIMIT 1`,
     function (error, results, fields) {
       if (error) throw error;
       console.log("results:", results);
@@ -61,7 +51,6 @@ function fetchData(callback) {
       }
     }
   );
-  currentRecordIndex++;
 }
 
 const server = new socketio.Server(httpServer, {
@@ -80,7 +69,7 @@ server.on("connection", (socket) => {
 
   timeChange = setInterval(
     () => fetchData((data) => socket.emit("message", JSON.stringify(data))),
-    1000 // fetch data every second
+    10000 // fetch data every second
   );
 });
 

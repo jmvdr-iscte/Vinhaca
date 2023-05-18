@@ -12,7 +12,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const API_URL = 'http://192.168.114';
+const API_URL = 'http://192.168.1.109:5000';
 
 sendIds = async params => {
   await axios.post(`${API_URL}/userIds`, {params}).then(response => {
@@ -25,7 +25,7 @@ interface AuthScreenProps {
 }
 
 module.exports = AuthScreen = (props: AuthScreenProps) => {
-  const Login = () => props.navigation.navigate('Home');
+  const Login = () => props.navigation.navigate('Graph');
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
