@@ -3,7 +3,7 @@ import { Modal, Text, View, TouchableOpacity, TextInput, StyleSheet } from 'reac
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = "http://192.168.1.44:5000/reviews";
+const API_URL = "http://192.168.1.109:5000/reviews";
 
 interface starRatingProps {
   navigation: any;
