@@ -26,14 +26,14 @@ import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
-const API_URL = 'http://192.168.1.47';
+const API_URL = 'http://192.168.1.109';
 
 interface GraphProps {
   navigation: any;
 }
-//let value = null;
+let value = null;
 
-/*const getProductionId = () => {
+const getProductionId = () => {
   const [productionID, setProductionID] = useState('');
   useEffect(() => {
     async function fetchTemperature() {
@@ -47,7 +47,7 @@ interface GraphProps {
     fetchTemperature();
   }, []);
 };
-*/
+
 onWineTransfer = async () => {
   try {
     let wineID = value;
@@ -60,13 +60,12 @@ onWineTransfer = async () => {
 };
 
 function Graph(props: GraphProps) {
-  //getProductionId();
-  /* if (value != null) {
+  getProductionId();
+  if (value != null) {
     console.log(value);
     onWineTransfer().then(() => {});
     value = null;
   }
-  */
 
   const Navegate = () => props.navigation.navigate('Home');
   // const [intervalDuration, setIntervalDuration] = useState(120000);
@@ -181,7 +180,7 @@ function Graph(props: GraphProps) {
       setDialogBodyText('Please get some fucking water');
       setDialogImage(require('../assets/high_temperature.png'));
       handleModal();
-    } else if (temperatureAlert < 25) {
+    } else if (temperatureAlert < 20) {
       setDialogTitle('Way too cold');
       setDialogBodyText('Please heat that shit up');
       setDialogImage(require('../assets/low_temperature.png'));
