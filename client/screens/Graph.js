@@ -20,7 +20,7 @@ import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
 
-const API_URL = 'http://192.168.1.109';
+const API_URL = 'http://192.168.1.87';
 
 interface GraphProps {
   navigation: any;
@@ -42,16 +42,7 @@ interface GraphProps {
   }, []);
 };
 */
-onWineTransfer = async () => {
-  try {
-    let wineID = value;
-    await AsyncStorage.setItem('IDVinhos', wineID);
-    const idVinho = await AsyncStorage.getItem('IDVinhos');
-    console.log(idVinho);
-  } catch (error) {
-    console.log(error);
-  }
-};
+
 
 function Graph(props: GraphProps) {
   //getProductionId();

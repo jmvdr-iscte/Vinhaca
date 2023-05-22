@@ -18,7 +18,7 @@ import axios from 'axios';
 interface ProductionProps {
   navigation: any;
 }
-const API_URL = 'http://192.168.1.44:5000'
+const API_URL = 'http://192.168.1.87:5000'
 
 module.exports = Production = (props: ProductionProps) => {
   const navigation = useNavigation();
@@ -34,16 +34,48 @@ module.exports = Production = (props: ProductionProps) => {
       })
   });
 
-  onPressWineTransfer = async ({ item }) => {
-    try {
-      let idToString = JSON.stringify(item)
-      await AsyncStorage.setItem("IDproducao", idToString);
-      const value = await AsyncStorage.getItem("IDproducao");
-    } catch (error) {
-      console.log(error);
-    }
-    props.navigation.navigate("Graph")
+
+  function isEmpty(value) {
+    return value === null || value === undefined || value === '';
   }
+  
+
+
+  const handleWinePageClick = item => {
+    if (item.item.Info && !isEmpty(item.item.Info)) {
+      const parsedInfo = JSON.parse(item.item.Info);
+      const transformedData = {
+        "dataProcessProd": {
+          "IDProducao": parsedInfo.IDProducao || 0,
+          "Info": JSON.stringify(parsedInfo.Info || 0),
+          "Mosto": parsedInfo.Mosto || 0,
+          "Step": parsedInfo.Step || 0,
+          "WineQuantity": parsedInfo.WineQuantity || 0,
+        }
+      };
+  
+      if (parsedInfo.Step == 7) {
+        props.navigation.navigate('StepSevenWine', transformedData );
+        console.log(transformedData);
+      } else if (parsedInfo.Step == 8) {
+        props.navigation.navigate('StepEightWine', transformedData );
+      } else if (parsedInfo.Step == 6) {
+        props.navigation.navigate('StepSixWine',  transformedData );
+      } else if (parsedInfo.Step == 5) {
+        props.navigation.navigate('StepFiveWine',  transformedData );
+      } else if (parsedInfo.Step == 4) {
+        props.navigation.navigate('StepFourWine',  transformedData );
+      } else if (parsedInfo.Step == 3) {
+        props.navigation.navigate('StepThreeWine', transformedData );
+        console.log(transformedData);
+      } else if (parsedInfo.Step == 2) {
+        console.log(transformedData);
+        props.navigation.navigate('StepTwoWine',  transformedData );
+      }
+    } else {
+      props.navigation.navigate('StepOneWine', { item });
+    }
+  };
 
   const handleFavoriteClick = item => {
     axios
@@ -58,7 +90,7 @@ module.exports = Production = (props: ProductionProps) => {
   };
 
   const oneWine = ({ item }) => (
-    <TouchableOpacity onPress={() => onPressWineTransfer({ item })}>
+    <TouchableOpacity onPress={() => handleWinePageClick({ item })}>
       <ImageBackground
         style={styles.cartaVinhosIcon}
         resizeMode="cover"
