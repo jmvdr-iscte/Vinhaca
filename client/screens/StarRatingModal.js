@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Text, View, TouchableOpacity, TextInput, StyleSheet, useWindowDimensions, Image } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Modal,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  useWindowDimensions,
+  Image,
+} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const API_URL = "http://192.168.1.87:5000/reviews";
-
+const API_URL = 'http://192.168.1.48:5000/reviews';
 
 interface starRatingProps {
   navigation: any;
 }
 
-
 const StarRatingModal = (props: starRatingProps) => {
+  const {dataProcessProd} = props.route.params;
   const [modalVisible, setModalVisible] = useState(true);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
@@ -22,10 +29,8 @@ const StarRatingModal = (props: starRatingProps) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const value = await AsyncStorage.getItem('IDVinhos');
-        const jsnoValue = JSON.parse(value)
-        const idWine = jsnoValue.IDVinho
-        setIDWine(idWine);
+       let wineIdentification = dataProcessProd.IDVinho;
+        setIDWine(wineIdentification);
       } catch (err) {
         console.log(err);
       }
@@ -33,50 +38,53 @@ const StarRatingModal = (props: starRatingProps) => {
     fetchData();
   }, []);
 
-
-  sendReview = async (params) => {
-
-    await axios.post(API_URL, { params })
-      .then((response) => {
-        console.log(response);
-      })
-
-  }
+  sendReview = async params => {
+    await axios.post(API_URL, {params}).then(response => {
+      console.log(response);
+    });
+  };
   handleSubmit = async () => {
     var payload = {
       rating,
       review,
-      idWine
-    }
-    console.log(payload)
+      idWine,
+    };
+    console.log(payload);
     setModalVisible(false);
-    props.navigation.navigate("Production");
-    await sendReview(payload)
-  }
+    props.navigation.navigate('Home');
+    await sendReview(payload);
+  };
 
   return (
     <View>
-      <Modal animationType='slide' transparent={false} visible={modalVisible}>
+      <Modal animationType="slide" transparent={false} visible={modalVisible}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>Please Rate Your Wine</Text>
 
-          <Image source={require('../assets/rating_image.png')} style={styles.image} />
-    
+          <Image
+            source={require('../assets/rating_image.png')}
+            style={styles.image}
+          />
+
           <View style={styles.starContainer}>
             {[1, 2, 3, 4, 5].map(i => {
               return (
                 <TouchableOpacity key={i} onPress={() => setRating(i)}>
-                  {i <= rating ? <Text style={styles.starFilled}>★</Text> : <Text style={styles.starEmpty}>☆</Text>}
+                  {i <= rating ? (
+                    <Text style={styles.starFilled}>★</Text>
+                  ) : (
+                    <Text style={styles.starEmpty}>☆</Text>
+                  )}
                 </TouchableOpacity>
               );
             })}
           </View>
 
-          <View style={[styles.textInputContainer, { width: windowWidth - 40 }]}>
+          <View style={[styles.textInputContainer, {width: windowWidth - 40}]}>
             <TextInput
               style={styles.reviewInput}
-              placeholder='Write your review here...'
-              placeholderTextColor='#ffffff'
+              placeholder="Write your review here..."
+              placeholderTextColor="#ffffff"
               onChangeText={text => setReview(text)}
               value={review}
               multiline={true}

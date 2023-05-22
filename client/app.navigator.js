@@ -55,4 +55,3 @@ module.exports = AppNavigator = () => (
     </Navigator>
   </NavigationContainer>
 );
-

@@ -9,7 +9,7 @@ interface StepSixProps {
 }
 
 
-const API_URL="http://192.168.1.87:5000"
+const API_URL="http://192.168.1.48:5000"
 
 module.exports = StepSixWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;
@@ -101,6 +101,7 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
       Mosto: mostoProduzido,
+      IDVinho: dataProcessProd.IDVinho
     };
   
     // Send the postData to the server
@@ -122,9 +123,6 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
 
   const handleSimButtonClick = () => {
 
-    
-    
-    
 
     setMostrarReacaoSim(true);
     

@@ -9,7 +9,7 @@ interface StepFiveProps {
 }
 
 
-const API_URL="http://192.168.1.87:5000"
+const API_URL="http://192.168.1.48:5000"
 
 module.exports = StepFiveWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;
@@ -71,6 +71,7 @@ module.exports = StepFiveWine = (props: StepFiveProps) => {
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
       Mosto: mostoProduzido,
+      IDVinho: dataProcessProd.IDVinho
     };
   
     // Send the postData to the server

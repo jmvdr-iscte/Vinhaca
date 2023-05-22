@@ -21,7 +21,7 @@ interface RecipeScreenProps {
   navigation: any;
 }
 
-const API_URL = "http://192.168.1.87:5000"
+const API_URL = "http://192.168.1.48:5000"
 
 
 module.exports = RecipeScreen = (props: RecipeScreenProps) => {

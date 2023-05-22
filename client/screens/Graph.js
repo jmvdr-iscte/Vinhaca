@@ -28,7 +28,7 @@ import {Modal} from './ModalAlerts';
 
 
 
-const API_URL = 'http://192.168.1.87';
+const API_URL = 'http://192.168.1.48';
 
 
 interface GraphProps {
@@ -70,24 +70,10 @@ function Graph(props: GraphProps) {
       console.log(error);
     }
   };
-  const getAllItems = async () => {
-    try {
-      const keys = await AsyncStorage.getAllKeys(); // Retrieve all the keys
-      const items = await AsyncStorage.multiGet(keys); // Retrieve all the values based on the keys
-
-      // Process the items
-      items.forEach(([key, value]) => {
-        console.log(`Key: ${key}, Value: ${value}`);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
     useEffect(() => {
       async function fetchProductionID() {
         try {
         let value = await AsyncStorage.getItem('IDproducao');
-          getAllItems();
           setProductionID(value);
           onWineTransfer()
         } catch (err) {
@@ -281,9 +267,6 @@ fetchProductionID()
       <TouchableOpacity onPress={Navegate}>
         <Text>{'back'}</Text>
       </TouchableOpacity>
-      <Button onPress={() => props.navigation.navigate('StarRatingModal')}>
-        <Text>{'How good was the wine?'}</Text>
-      </Button>
       <Modal isVisible={isModalVisible}>
         <Modal.Container>
           <Modal.Header title={dialogTitle} />

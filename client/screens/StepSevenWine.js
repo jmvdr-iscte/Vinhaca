@@ -7,7 +7,7 @@ interface StepSevenProps {
   route: any;
 }
 
-const API_URL = "http://192.168.1.87:5000";
+const API_URL = "http://192.168.1.48:5000";
 
 module.exports = StepSevenWine = (props: StepSevenProps) => {
   const { dataProcessProd } = props.route.params;
@@ -64,10 +64,11 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       setTemperatureColor(isTemperatureInRange && isDensityEqualTo1000 ? '#77b066' : '#B3385B');
 
       // Set other measures if available
-      console.log(dataa);
+     /* console.log(dataa);
       console.log(dataa.temperature ? dataa.temperature.Leitura : null);
       console.log(dataa.density ? dataa.density.Leitura : null);
       console.log(Object.keys(dataa).length);
+      */
     }
   }, [dataa]);
 
@@ -84,6 +85,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
       Mosto: mostoProduzido,
+      IDVinho: dataProcessProd.IDVinho
     };
 
     // Send the postData to the server

@@ -109,7 +109,7 @@ router.get("/vinhoProd/:IDVinho", function (req, res) {
 
 
 router.post('/InfoProd', (req, res) => {
-  const { IDProducao, Info, Step, WineQuantity, Mosto } = req.body;
+  const { IDProducao, Info, Step, WineQuantity, Mosto, IDVinho } = req.body;
 
   // Create an object to store both Info and Step
   const updatedData = {
@@ -118,10 +118,11 @@ router.post('/InfoProd', (req, res) => {
     Info: JSON.parse(Info),
     WineQuantity: WineQuantity,
     Mosto: Mosto,
-
-    
+    IDVinho: IDVinho
   };
 
+  console.log("mamamki")
+  console.log(updatedData)
   
 
   // Update the "Info" column in the "producao" table
