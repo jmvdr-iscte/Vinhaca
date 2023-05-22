@@ -2,12 +2,13 @@ import express from "express";
 import http from "http";
 import * as socketio from "socket.io";
 import mysql from "mysql";
+import dataPreparation from "./utils/dataPreparation.js";
 
 const port = 5003;
 const app = express();
 const httpServer = http.createServer(app);
 let dataLiquidLevel = [];
-
+let liquidLevelCount = 0;
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -27,25 +28,32 @@ let currentRecordIndex = 0;
 
 function fetchData(callback) {
   connection.query(
-    `SELECT Leitura FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao LIMIT ${currentRecordIndex}, 1`,
+    `SELECT Leitura, IDMedicao FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao DESC LIMIT 1`,
     function (error, results, fields) {
       if (error) throw error;
-      console.log("results:", results);
-      if (results.length === 1) {
-        const liquidLevel = results[0].Leitura;
+      if (results.length > 0) {
+        console.log(results);
+        console.log("results:", results[results.length - 1]);
+        console.log(results[results.length - 1].IDMedicao);
+        const liquidLevel = results[results.length - 1].Leitura;
         if (dataLiquidLevel.length > 50) {
+          dataLiquidLevel = dataPreparation(dataLiquidLevel);
           dataLiquidLevel.reverse();
           dataLiquidLevel.pop();
           dataLiquidLevel.reverse();
+          results.length++;
         }
-        dataLiquidLevel.push({ x: new Date().getSeconds(), y: liquidLevel });
+
+        if (liquidLevelCount <= 50) {
+          liquidLevelCount++;
+        }
+        dataLiquidLevel.push({ x: liquidLevelCount, y: liquidLevel });
         callback(dataLiquidLevel);
       } else {
         console.log(`No more records to fetch.`);
       }
     }
   );
-  currentRecordIndex++;
 }
 
 const server = new socketio.Server(httpServer, {
@@ -64,7 +72,7 @@ server.on("connection", (socket) => {
 
   setInterval(
     () => fetchData((data) => socket.emit("message", JSON.stringify(data))),
-    1000
+    10000
   );
 });
 

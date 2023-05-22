@@ -294,14 +294,36 @@ router.post("/reviews", function (req, res) {
   let Rating = req.body.params.rating;
   let idWine = req.body.params.idWine;
 
-  var query =
-    "INSERT INTO review ( descricaoReview , Utilizadorid, reviewRating, IDVinho) VALUES ? ";
+  var selectQuery =
+    "SELECT * FROM review WHERE Utilizadorid = ? AND IDVinho = ?";
 
-  let values = [[Review, ID, Rating, idWine]];
-
-  con.query(query, [values], function (err, result) {
+  con.query(selectQuery, [ID, idWine], function (err, rows) {
     if (err) throw err;
-    console.log(result);
+
+    if (rows.length > 0) {
+      var updateQuery =
+        "UPDATE review SET descricaoReview = ?, reviewRating = ? WHERE Utilizadorid = ? AND IDVinho = ?";
+      con.query(
+        updateQuery,
+        [Review, Rating, ID, idWine],
+        function (err, result) {
+          if (err) throw err;
+          console.log(result);
+        }
+      );
+    } else {
+      var insertQuery =
+        "INSERT INTO review (descricaoReview, Utilizadorid, reviewRating, IDVinho) VALUES (?, ?, ?, ?)";
+
+      con.query(
+        insertQuery,
+        [Review, ID, Rating, idWine],
+        function (err, result) {
+          if (err) throw err;
+          console.log(result);
+        }
+      );
+    }
   });
 });
 
@@ -312,7 +334,7 @@ router.post("/inserirProducao", function (req, res) {
   let IDVinho = req.body.item.IDVinho;
 
   var query =
-    "INSERT INTO producao ( NomeProducao , IDVinho, Utilizadorid) VALUES ? ";
+    "INSERT INTO producao ( NomeProducao, IDVinho, Utilizadorid) VALUES ? ";
   let values = [[NomeProducao, IDVinho, ID]];
 
   con.query(query, [values], function (err, result) {

@@ -18,7 +18,9 @@ import axios from 'axios';
 interface ProductionProps {
   navigation: any;
 }
+
 const API_URL = 'http://192.168.1.87:5000'
+
 
 module.exports = Production = (props: ProductionProps) => {
   const navigation = useNavigation();

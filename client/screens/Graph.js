@@ -5,7 +5,14 @@ import {Component} from 'react';
 import {useState, useEffect, useRef} from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View, Text, Pressable, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from 'react-native';
 import socketIO from 'socket.io-client';
 import {LineChart, Grid, contentInset} from 'react-native-svg';
 import {StyleSheet} from 'react-native';
@@ -20,38 +27,18 @@ import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
 
+
 const API_URL = 'http://192.168.1.87';
+
 
 interface GraphProps {
   navigation: any;
 }
-//let value = null;
 
-/*const getProductionId = () => {
-  const [productionID, setProductionID] = useState('');
-  useEffect(() => {
-    async function fetchTemperature() {
-      try {
-        value = await AsyncStorage.getItem('IDproducao');
-        setProductionID(value);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchTemperature();
-  }, []);
-};
-*/
 
 
 function Graph(props: GraphProps) {
-  //getProductionId();
-  /* if (value != null) {
-    console.log(value);
-    onWineTransfer().then(() => {});
-    value = null;
-  }
-  */
+  
 
   const Navegate = () => props.navigation.navigate('Home');
 
@@ -63,6 +50,7 @@ function Graph(props: GraphProps) {
   const [density, setDensity] = useState([]);
   const [liquidLevel, setliquidLevel] = useState([]);
 
+  const [productionID, setProductionID] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogBodyText, setDialogBodyText] = useState('');
@@ -71,6 +59,44 @@ function Graph(props: GraphProps) {
   );
 
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
+
+  onWineTransfer = async () => {
+    try {
+      let wineID = productionID;
+      await AsyncStorage.setItem('IDVinhos', wineID);
+      const idVinho = await AsyncStorage.getItem('IDVinhos');
+      console.log(idVinho);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getAllItems = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys(); // Retrieve all the keys
+      const items = await AsyncStorage.multiGet(keys); // Retrieve all the values based on the keys
+
+      // Process the items
+      items.forEach(([key, value]) => {
+        console.log(`Key: ${key}, Value: ${value}`);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+    useEffect(() => {
+      async function fetchProductionID() {
+        try {
+        let value = await AsyncStorage.getItem('IDproducao');
+          getAllItems();
+          setProductionID(value);
+          onWineTransfer()
+        } catch (err) {
+          console.log(err);
+        }
+      }
+fetchProductionID()
+    }, []);
+
 
   useEffect(() => {
     const socket = socketIO(`${API_URL}:5001`, {
@@ -89,7 +115,7 @@ function Graph(props: GraphProps) {
           if (!temperatureInterval.current) {
             temperatureInterval.current = setInterval(() => {
               checkTemperature(parsedData[parsedData.length - 1].y);
-            }, 1000);
+            }, 10500);
           }
         }
       });
@@ -113,7 +139,7 @@ function Graph(props: GraphProps) {
           if (!densityInterval.current) {
             densityInterval.current = setInterval(() => {
               checkDensity(parsedData2[parsedData2.length - 1].y);
-            }, 1000);
+            }, 10500);
           }
         }
       });
@@ -133,7 +159,7 @@ function Graph(props: GraphProps) {
           if (!liquidLevelInterval.current) {
             liquidLevelInterval.current = setInterval(() => {
               checkLiquidLevel(parsedData3[parsedData3.length - 1].y);
-            }, 1000);
+            }, 10500);
           }
         }
       });
@@ -200,7 +226,6 @@ function Graph(props: GraphProps) {
       setDialogBodyText('Please make it more dense');
       setDialogImage(require('../assets/low_density.png'));
       handleModal();
-
     }
   };
 

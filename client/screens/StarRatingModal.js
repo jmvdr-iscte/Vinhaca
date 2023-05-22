@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { Modal, Text, View, TouchableOpacity, TextInput, StyleSheet, useWindowDimensions, Image } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 const API_URL = "http://192.168.1.87:5000/reviews";
+
 
 interface starRatingProps {
   navigation: any;
@@ -15,6 +17,7 @@ const StarRatingModal = (props: starRatingProps) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const [idWine, setIDWine] = useState(0);
+  const windowWidth = useWindowDimensions().width;
 
   useEffect(() => {
     async function fetchData() {
@@ -51,33 +54,35 @@ const StarRatingModal = (props: starRatingProps) => {
     await sendReview(payload)
   }
 
-
-
-
   return (
     <View>
       <Modal animationType='slide' transparent={false} visible={modalVisible}>
         <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Please rate your wine</Text>
+          <Text style={styles.modalTitle}>Please Rate Your Wine</Text>
 
+          <Image source={require('../assets/rating_image.png')} style={styles.image} />
+    
           <View style={styles.starContainer}>
             {[1, 2, 3, 4, 5].map(i => {
               return (
                 <TouchableOpacity key={i} onPress={() => setRating(i)}>
-                  {i <= rating ? <Text style={styles.star1}>★</Text> : <Text style={styles.star}>☆</Text>}
+                  {i <= rating ? <Text style={styles.starFilled}>★</Text> : <Text style={styles.starEmpty}>☆</Text>}
                 </TouchableOpacity>
               );
             })}
           </View>
 
-          <TextInput
-            style={styles.reviewInput}
-            placeholder='Write your review here...'
-            onChangeText={text => setReview(text)}
-            value={review}
-            multiline={true}
-            numberOfLines={4}
-          />
+          <View style={[styles.textInputContainer, { width: windowWidth - 40 }]}>
+            <TextInput
+              style={styles.reviewInput}
+              placeholder='Write your review here...'
+              placeholderTextColor='#ffffff'
+              onChangeText={text => setReview(text)}
+              value={review}
+              multiline={true}
+              numberOfLines={4}
+            />
+          </View>
 
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Text style={styles.submitButtonText}>Submit</Text>
@@ -89,48 +94,66 @@ const StarRatingModal = (props: starRatingProps) => {
 };
 
 const styles = StyleSheet.create({
-  reviewButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  reviewButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
   modalContainer: {
-    padding: 20,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+    backgroundColor: '#56132a',
   },
   modalTitle: {
     fontSize: 20,
-    marginBottom: 10,
+    marginBottom: 60,
+    marginTop: 10,
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
   starContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 70,
+  },
+  starEmpty: {
+    fontSize: 50,
+    marginRight: 10,
+    color: '#ffffff',
+  },
+  starFilled: {
+    fontSize: 50,
+    marginRight: 10,
+    color: '#FFFF00',
+  },
+  textInputContainer: {
     marginBottom: 20,
-  },
-  star: {
-    fontSize: 30,
-    marginRight: 10,
-  },
-  star1: {
-    fontSize: 30,
-    marginRight: 10,
-    color: "#FFFF00"
   },
   reviewInput: {
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: '#ffffff',
     padding: 10,
-    marginBottom: 20,
     height: 100,
+    color: '#ffffff',
+    textAlignVertical: 'top',
   },
   submitButton: {
-    backgroundColor: 'blue',
-    padding: 10,
+    backgroundColor: '#ffffff',
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 40,
+    width: 150,
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    fontSize: 15,
+    color: '#56132a',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+    resizeMode: 'contain',
+  },
+});
 
-  }
-})
 export default StarRatingModal;

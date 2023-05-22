@@ -3,9 +3,9 @@ import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, P
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 
-// const api = axios.create({
-//     baseURL:'http://192.168.1.124:5000/userIds'
-// })
+
+const API_URL = 'http://192.168.1.109:5000';
+
 
 
 const API_URL = 'http://192.168.1.87:5000';
@@ -25,6 +25,7 @@ interface AuthScreenProps {
 
 
 module.exports = AuthScreen = (props: AuthScreenProps) => {
+
     const Login = () => props.navigation.navigate("Graph")
 
     const [email, setEmail] = useState('');
@@ -111,6 +112,7 @@ module.exports = AuthScreen = (props: AuthScreenProps) => {
             .catch(err => {
                 console.log(err);
             });
+
     };
 
     const getMessage = () => {

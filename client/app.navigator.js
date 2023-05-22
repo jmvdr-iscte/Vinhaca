@@ -28,7 +28,9 @@ const {Navigator, Screen} = createStackNavigator();
 module.exports = AppNavigator = () => (
 
   <NavigationContainer>
+
     <Navigator screenOptions={{headerShown: false}} initialRouteName="AuthScreen">
+
       <Screen name="AuthScreen" component={AuthScreen}></Screen>
       <Screen name="Home" component={Home}></Screen>
       <Screen name="Graph" component={Graph}></Screen>
