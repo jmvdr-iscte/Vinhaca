@@ -31,44 +31,11 @@ const API_URL = 'http://192.168.1.109';
 interface GraphProps {
   navigation: any;
 }
-let value = null;
-
-const getProductionId = () => {
-  const [productionID, setProductionID] = useState('');
-  useEffect(() => {
-    async function fetchTemperature() {
-      try {
-        value = await AsyncStorage.getItem('IDproducao');
-        setProductionID(value);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchTemperature();
-  }, []);
-};
-
-onWineTransfer = async () => {
-  try {
-    let wineID = value;
-    await AsyncStorage.setItem('IDVinhos', wineID);
-    const idVinho = await AsyncStorage.getItem('IDVinhos');
-    console.log(idVinho);
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 function Graph(props: GraphProps) {
-  getProductionId();
-  if (value != null) {
-    console.log(value);
-    onWineTransfer().then(() => {});
-    value = null;
-  }
+  
 
   const Navegate = () => props.navigation.navigate('Home');
-  // const [intervalDuration, setIntervalDuration] = useState(120000);
 
   const liquidLevelInterval = useRef(null);
   const densityInterval = useRef(null);
@@ -78,6 +45,7 @@ function Graph(props: GraphProps) {
   const [density, setDensity] = useState([]);
   const [liquidLevel, setliquidLevel] = useState([]);
 
+  const [productionID, setProductionID] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogBodyText, setDialogBodyText] = useState('');
@@ -86,6 +54,44 @@ function Graph(props: GraphProps) {
   );
 
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
+
+  onWineTransfer = async () => {
+    try {
+      let wineID = productionID;
+      await AsyncStorage.setItem('IDVinhos', wineID);
+      const idVinho = await AsyncStorage.getItem('IDVinhos');
+      console.log(idVinho);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getAllItems = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys(); // Retrieve all the keys
+      const items = await AsyncStorage.multiGet(keys); // Retrieve all the values based on the keys
+
+      // Process the items
+      items.forEach(([key, value]) => {
+        console.log(`Key: ${key}, Value: ${value}`);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+    useEffect(() => {
+      async function fetchProductionID() {
+        try {
+        let value = await AsyncStorage.getItem('IDproducao');
+          getAllItems();
+          setProductionID(value);
+          onWineTransfer()
+        } catch (err) {
+          console.log(err);
+        }
+      }
+fetchProductionID()
+    }, []);
+
 
   useEffect(() => {
     const socket = socketIO(`${API_URL}:5001`, {
@@ -217,14 +223,7 @@ function Graph(props: GraphProps) {
       handleModal();
     }
   };
-  /*
-  <Text>Interval Duration (ms):</Text>
-      <TextInput
-        value={intervalDuration.toString()}
-        onChangeText={text => setIntervalDuration(parseInt(text))}
-        keyboardType="numeric"
-      />
-      */
+
   return (
     <View style={styles.container}>
       <VictoryChart
