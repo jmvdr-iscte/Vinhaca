@@ -20,7 +20,7 @@ const {Navigator, Screen} = createStackNavigator();
 module.exports = AppNavigator = () => (
 
   <NavigationContainer>
-    <Navigator screenOptions={{headerShown: false}} initialRouteName="AuthScreen">
+    <Navigator screenOptions={{headerShown: false}} initialRouteName="ContactUs">
       <Screen name="AuthScreen" component={AuthScreen}></Screen>
       <Screen name="Home" component={Home}></Screen>
       <Screen name="Graph" component={Graph}></Screen>
