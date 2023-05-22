@@ -17,7 +17,9 @@ interface SavedScreenProps {
   navigation: any;
 }
 
-const API_URL = 'http://192.168.1.109:5000';
+
+const API_URL = 'http://192.168.1.87:5000';
+
 
 module.exports = SavedScreen = (props: SavedScreenProps) => {
   const navigation = useNavigation();

@@ -26,11 +26,16 @@ import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 
-const API_URL = 'http://192.168.1.109';
+
+
+const API_URL = 'http://192.168.1.87';
+
 
 interface GraphProps {
   navigation: any;
 }
+
+
 
 function Graph(props: GraphProps) {
   

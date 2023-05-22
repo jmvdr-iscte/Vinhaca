@@ -12,7 +12,7 @@ var con = mysql.createConnection({
   port: "3306",
   user: "root",
   password: "",
-  database: "vinhaca_1_1",
+  database: "vinhaca",
 });
 
 var ID = "";
@@ -46,6 +46,95 @@ router.get("/vinho", function (req, res) {
       }
     }
   );
+});
+
+router.get("/vinhoProd/:IDVinho", function (req, res) {
+  const idVinho = req.params.IDVinho;
+
+  const responseData = {
+    wine: null,
+    vinhocastaItems: [],
+  };
+
+
+  
+
+
+
+  // Query the Vinho table using the IDVinho parameter
+  con.query(
+    "SELECT * FROM vinho WHERE IDVinho = ?",
+    [idVinho],
+    function (error, rows, fields) {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Internal Server Error");
+      } else {
+        if (rows.length > 0) {
+          responseData.wine = rows[0];
+
+          // Query the Vinho-Casta table using the IDVinho parameter
+          con.query(
+            "SELECT v.*, c.NomeCasta FROM `vinho-casta` v JOIN casta c ON v.IDCasta = c.IDCasta WHERE v.IDVinho = ?",
+            [idVinho],
+            function (error, vinhocastaRows, fields) {
+              if (error) {
+                console.log(error);
+                res.status(500).send("Internal Server Error");
+              } else {
+                // Map through vinhocastaRows and add the NomeCasta property to each item
+                const updatedVinhocastaItems = vinhocastaRows.map((item) => ({
+                  ...item,
+                  NomeCasta: item.NomeCasta
+                }));
+          
+                // Update the responseData with the modified vinhocastaItems
+                responseData.vinhocastaItems = updatedVinhocastaItems;
+          
+                // Send the response data
+                res.send(responseData);
+              }
+            }
+          );
+
+        } else {
+          res.status(404).send("Wine not found");
+
+          
+        }
+      }
+    }
+  );
+});
+
+
+router.post('/InfoProd', (req, res) => {
+  const { IDProducao, Info, Step, WineQuantity, Mosto } = req.body;
+
+  // Create an object to store both Info and Step
+  const updatedData = {
+    IDProducao: IDProducao,
+    Step: Step,
+    Info: JSON.parse(Info),
+    WineQuantity: WineQuantity,
+    Mosto: Mosto,
+
+    
+  };
+
+  
+
+  // Update the "Info" column in the "producao" table
+  const query = "UPDATE producao SET Info = ? WHERE IDProducao = ?";
+con.query(query, [JSON.stringify(updatedData), IDProducao], (error, results) => {
+  if (error) {
+    console.error('Error updating "Info" column:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  } else {
+    console.log('Info column updated successfully');
+    res.status(200).json(updatedData);
+  }
+});
 });
 
 router.post("/castasSugestions", (req, res) => {
@@ -83,6 +172,42 @@ router.get("/castas", function (req, res) {
     }
   });
 });
+
+router.get("/ultimaLeituraTemp", function (req, res) {
+  con.query("SELECT * FROM medicao WHERE NomeSensor = 'Temperature' ORDER BY IDMedicao DESC LIMIT 1", function (error, rows, fields) {
+    if (error) console.log(error);
+    else {
+      res.send(rows);
+    }
+  });
+});
+
+
+router.get("/ultimaLeituraData", function (req, res) {
+  con.query("SELECT * FROM medicao WHERE NomeSensor = 'Density' ORDER BY IDMedicao DESC LIMIT 1", function (error, densityRows, fields) {
+    if (error) console.log(error);
+    else {
+      con.query("SELECT * FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao DESC LIMIT 1", function (error, liquidLevelRows, fields) {
+        if (error) console.log(error);
+        else {
+          con.query("SELECT * FROM medicao WHERE NomeSensor = 'Temperature' ORDER BY IDMedicao DESC LIMIT 1", function (error, temperatureRows, fields) {
+            if (error) console.log(error);
+            else {
+              const result = {
+                density: densityRows[0],
+                liquidLevel: liquidLevelRows[0],
+                temperature: temperatureRows[0]
+              };
+              res.send(result);
+            }
+          });
+        }
+      });
+    }
+  });
+});
+
+
 
 router.get("/favorito", function (req, res) {
   UtilizadorID = ID;

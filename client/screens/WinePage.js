@@ -9,7 +9,9 @@ interface WinePageScreenProps {
     route: any;
   }
 
-  const API_URL = "http://192.168.1.109:5000"
+
+  const API_URL = "http://192.168.1.87:5000"
+
   
   module.exports = WinePage = (props: WinePageScreenProps) => {
 

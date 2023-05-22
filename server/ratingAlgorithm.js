@@ -6,7 +6,7 @@ const pool = mysql.createPool({
   port: "3306",
   user: "root",
   password: "",
-  database: "vinhaca_1_1",
+  database: "vinhaca",
 });
 // execute the query
 async function getNumRatingsPerWine() {
