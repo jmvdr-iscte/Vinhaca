@@ -36,6 +36,8 @@ module.exports = StepEightWine = (props: StepEightProps) => {
 
   const [dataProcessProd2, setDataProcessProd2] = useState({});
 
+  
+
   const handleProceed = () => {
     const postData = {
       Info: dataProcessProd.Info,
@@ -43,10 +45,24 @@ module.exports = StepEightWine = (props: StepEightProps) => {
       WineQuantity: dataProcessProd.WineQuantity,
       IDVinho: dataProcessProd.IDVinho
     };
+    console.log("xafariz");
+    
+    axios
+          .delete(`${API_URL}/producao/${dataProcessProd.IDProducao}`)
+              .then(resp => {
+                console.log(resp.data);
+                
+              })
+              .catch(error => {
+                console.error(error);
+              });
+
 
     props.navigation.navigate('StarRatingModal', { dataProcessProd: postData });
     console.log(dataProcessProd.IDVinho);
   };
+
+
 
   const handleSimButtonClick = () => {
     setMostoProduzido('12');
