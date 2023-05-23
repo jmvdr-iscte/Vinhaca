@@ -53,6 +53,7 @@ module.exports = Production = (props: ProductionProps) => {
           "Mosto": parsedInfo.Mosto || 0,
           "Step": parsedInfo.Step || 0,
           "WineQuantity": parsedInfo.WineQuantity || 0,
+          "IDVinho" : parsedInfo.IDVinho || 0
         }
       };
   
@@ -398,7 +399,7 @@ const styles = StyleSheet.create({
   sensoresText: {
     position: 'relative',
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.8,
     fontFamily: 'Poppins',
     color: '#fff',
     textAlign: 'left',

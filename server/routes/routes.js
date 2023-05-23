@@ -121,8 +121,6 @@ router.post('/InfoProd', (req, res) => {
     IDVinho: IDVinho
   };
 
-  console.log("mamamki")
-  console.log(updatedData)
   
 
   // Update the "Info" column in the "producao" table
@@ -270,6 +268,23 @@ router.delete("/favorito/:id", function (req, res) {
     }
   );
 });
+
+router.delete("/producao/:id", function (req, res) {
+  const prodId = req.params.id;
+  const sqlParams = [prodId];
+
+  con.query(
+    "DELETE FROM producao WHERE IDproducao = ?",
+    sqlParams,
+    function (error, result) {
+      if (error) console.log(error);
+      else {
+        res.send("Production deleted successfully");
+      }
+    }
+  );
+});
+
 
 router.post("/userIds", function (req, res) {
   // console.log(req.body.params)

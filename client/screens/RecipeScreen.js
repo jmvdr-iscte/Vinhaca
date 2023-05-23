@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
   sensoresText: {
     position: 'relative',
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.8,
     fontFamily: 'Poppins',
     color: '#fff',
     textAlign: 'left',

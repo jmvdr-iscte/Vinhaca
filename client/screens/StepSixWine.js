@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef} from 'react';
 import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 import { post } from '../../server/routes/routes';
-import CountDown from 'react-native-countdown-component';
+import CountDownTimer from 'react-native-countdown-timer-hooks';
 
 interface StepSixProps {
   route: any;
 }
 
 
-const API_URL="http://192.168.1.48:5000"
+const API_URL="http://192.168.1.49:5000"
 
 module.exports = StepSixWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;
@@ -84,8 +84,14 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
 
   const handleButtonClick = () => {
     setShowInfo(true);
-    handleTimerPress;
+    handleTimerPress();
     
+  };
+
+  const handleCountdownFinish = () => {
+    console.log('Timer finished');
+    setTimerActive(false);
+    setTimerFinished(true);
   };
 
   const [dataProcessProd2, setDataProcessProd2] = useState({});
@@ -179,15 +185,11 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
 
           <View style={styles.mostoCorreto}>
           <View style={[styles.subHeading, styles.quantity]}>
-          <CountDown
+          <CountDownTimer
           ref={countdownRef}
           until={1}
           size={30}
-          onFinish={() => {
-            console.log('Timer finished');
-            setTimerActive(false);
-            setTimerFinished(true);
-          }}
+          timerCallback={handleCountdownFinish}
           
           digitStyle={{ backgroundColor: '#B3385B' }}
           digitTxtStyle={{ color: 'white', backgroundColor: '#B3385B', fontSize: 38 }}

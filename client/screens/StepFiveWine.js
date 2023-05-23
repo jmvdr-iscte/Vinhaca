@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef} from 'react';
 import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 import { post } from '../../server/routes/routes';
-import CountDown from 'react-native-countdown-component';
+import CountDownTimer from 'react-native-countdown-timer-hooks';
 
 interface StepFiveProps {
   route: any;
 }
 
 
-const API_URL="http://192.168.1.48:5000"
+const API_URL="http://192.168.1.49:5000"
 
 module.exports = StepFiveWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;
@@ -54,7 +54,7 @@ module.exports = StepFiveWine = (props: StepFiveProps) => {
 
   const handleButtonClick = () => {
     setShowInfo(true);
-    handleTimerPress;
+    handleTimerPress();
     
   };
 
@@ -79,7 +79,7 @@ module.exports = StepFiveWine = (props: StepFiveProps) => {
       .then(response => {
         // Handle the response if needed
         setDataProcessProd2(response.data);
-        console.log('Post successful:', response.data);
+        console.log('Post successful: step5', response.data);
       })
       .catch(error => {
         console.error('Error posting data:', error);
@@ -105,7 +105,11 @@ module.exports = StepFiveWine = (props: StepFiveProps) => {
     setMostrarReacaoSim(false);
   };
 
-  
+  const handleCountdownFinish = () => {
+    console.log('Timer finished');
+    setTimerActive(false);
+    setTimerFinished(true);
+  };
 
   const handleNextButtonClick = () => {
     if (mostoRealizado !== '') {
@@ -151,15 +155,11 @@ module.exports = StepFiveWine = (props: StepFiveProps) => {
 
           <View style={styles.mostoCorreto}>
           <View style={[styles.subHeading, styles.quantity]}>
-          <CountDown
+          <CountDownTimer
           ref={countdownRef}
           until={1}
           size={30}
-          onFinish={() => {
-            console.log('Timer finished');
-            setTimerActive(false);
-            setTimerFinished(true);
-          }}
+          timerCallback={handleCountdownFinish}
           
           digitStyle={{ backgroundColor: '#B3385B' }}
           digitTxtStyle={{ color: 'white', backgroundColor: '#B3385B', fontSize: 38 }}

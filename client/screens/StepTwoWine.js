@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import axios from 'axios';
-import { post } from '../../server/routes/routes';
+import {post} from '../../server/routes/routes';
 
 interface StepTwoProps {
   route: any;
 }
 
-
-const API_URL="http://192.168.1.48:5000"
+const API_URL = 'http://192.168.1.49:5000';
 
 module.exports = StepTwoWine = (props: StepTwoProps) => {
-  const { dataProcessProd } = props.route.params;
+  const {dataProcessProd} = props.route.params;
   const [showInfo, setShowInfo] = useState(false);
   const [mostoRealizado, setMostoRealizado] = useState('');
   const [mostrarReacaoSim, setMostrarReacaoSim] = useState(false);
@@ -22,16 +29,14 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
   const [showProximoPasso, setShowProximoPasso] = useState(false);
 
   const handleButtonClick = () => {
-    setMostoProduzido(dataProcessProd.WineQuantity * 0.6);
+    setMostoProduzido((dataProcessProd.WineQuantity * 0.6).toFixed(2));
     setShowInfo(true);
   };
 
   const [dataProcessProd2, setDataProcessProd2] = useState({});
 
   const handleProceed = () => {
-    
-    
-    console.log("dataProcessProd");
+    console.log('dataProcessProd');
     console.log(dataProcessProd);
     const postData = {
       Info: dataProcessProd.Info,
@@ -39,11 +44,12 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
       Mosto: mostoProduzido,
-      IDVinho: dataProcessProd.IDVinho
+      IDVinho: dataProcessProd.IDVinho,
     };
-  
+
     // Send the postData to the server
-    axios.post(`${API_URL}/InfoProd`, postData)
+    axios
+      .post(`${API_URL}/InfoProd`, postData)
       .then(response => {
         // Handle the response if needed
         setDataProcessProd2(response.data);
@@ -52,14 +58,13 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
       .catch(error => {
         console.error('Error posting data:', error);
       });
-  
+
     // Move to the next step
-    console.log({ dataProcessProd: postData })
-     props.navigation.navigate('StepThreeWine', { dataProcessProd: postData });
+    console.log({dataProcessProd: postData});
+    props.navigation.navigate('StepThreeWine', {dataProcessProd: postData});
   };
 
   const handleSimButtonClick = () => {
-
     setMostoProduzido(mostoProduzido);
     setMostrarReacaoSim(true);
     setMostrarReacaoNao(false);
@@ -84,74 +89,81 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.frameView} onPress={() => props.navigation.navigate("Production")}>
-          <Image
-            style={styles.vectorIcon}
-            resizeMode="cover"
-            source={require("../assets/vector1.png")}
-          />
-        </TouchableOpacity>
-      
+      <TouchableOpacity
+        style={styles.frameView}
+        onPress={() => props.navigation.navigate('Production')}>
+        <Image
+          style={styles.vectorIcon}
+          resizeMode="cover"
+          source={require('../assets/vector1.png')}
+        />
+      </TouchableOpacity>
+
       <Text style={styles.heading}>Step Two</Text>
       <Text style={styles.heading}>Realização do Mosto</Text>
 
       <View style={styles.firstText}>
-      <Text style={styles.subHeading}>
-        Esmague as uvas de cada casta separadamente para extrair o suco...
-      </Text>
-      <Text style={styles.subHeading}>
-        Combine os sucos de ambas as castas numa cuba grande o suficiente para ocupar{' '}
-        {dataProcessProd.WineQuantity} L.
-      </Text>
-
+        <Text style={styles.subHeading}>
+          Esmague as uvas de cada casta separadamente para extrair o suco...
+        </Text>
+        <Text style={styles.subHeading}>
+          Combine os sucos de ambas as castas numa cuba grande o suficiente para
+          ocupar {dataProcessProd.WineQuantity} L.
+        </Text>
       </View>
 
-
       <View>
-          <TouchableOpacity style={styles.proceedButtonGray} onPress={handleButtonClick}>
-            <Text style={styles.buttonText}>Prosseguir</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.proceedButtonGray}
+          onPress={handleButtonClick}>
+          <Text style={styles.buttonText}>Prosseguir</Text>
+        </TouchableOpacity>
+      </View>
 
       {showInfo && (
         <View style={styles.screeny}>
           <View style={styles.mostoProduzido}>
-
-          <View style={styles.mostoCorreto}>
-          <Text style={[styles.subHeading, styles.quantity]}>{mostoProduzido} L</Text>
-          <Text style={styles.ingredientName}>Mosto Produzido</Text>
-          
-          </View>
-          {showEstacorreto && (
-            <Text style={styles.subHeading}>Está correto?</Text>
-          )}
-
+            <View style={styles.mostoCorreto}>
+              <Text style={[styles.subHeading, styles.quantity]}>
+                {mostoProduzido} L
+              </Text>
+              <Text style={styles.ingredientName}>Mosto Produzido</Text>
+            </View>
+            {showEstacorreto && (
+              <Text style={styles.subHeading}>Está correto?</Text>
+            )}
           </View>
 
           {!mostrarReacaoSim && !mostrarReacaoNao && !showProximoPasso && (
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.proceedButtonGraysimnao} onPress={handleSimButtonClick}>
-            <Text style={styles.buttonText}>Sim</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.proceedButtonGraysimnao} onPress={handleNaoButtonClick}>
-            <Text style={styles.buttonText}>Não</Text>
-          </TouchableOpacity>
-             
+              <TouchableOpacity
+                style={styles.proceedButtonGraysimnao}
+                onPress={handleSimButtonClick}>
+                <Text style={styles.buttonText}>Sim</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.proceedButtonGraysimnao}
+                onPress={handleNaoButtonClick}>
+                <Text style={styles.buttonText}>Não</Text>
+              </TouchableOpacity>
             </View>
           )}
 
           {mostrarReacaoNao && showInput && !showProximoPasso && (
             <View style={styles.inputContainer}>
-              <Text style={styles.subHeading}>Qual foi a quantidade de mosto realizado?</Text>
+              <Text style={styles.subHeading}>
+                Qual foi a quantidade de mosto realizado?
+              </Text>
               <TextInput
                 style={styles.input}
-                onChangeText={(text) => setMostoRealizado(text)}
+                onChangeText={text => setMostoRealizado(text)}
                 value={mostoRealizado}
               />
-              <TouchableOpacity style={styles.proceedButtonGray} onPress={handleNextButtonClick}>
-            <Text style={styles.buttonText}>Next</Text>
-          </TouchableOpacity>
-              
+              <TouchableOpacity
+                style={styles.proceedButtonGray}
+                onPress={handleNextButtonClick}>
+                <Text style={styles.buttonText}>Next</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -159,7 +171,9 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
 
       {showProximoPasso && (
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
+          <TouchableOpacity
+            style={styles.proceedButton}
+            onPress={handleProceed}>
             <Text style={styles.buttonText}>Próximo Passo</Text>
           </TouchableOpacity>
         </View>
@@ -167,7 +181,9 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
 
       {(mostrarReacaoSim || mostrarReacaoNao) && !showProximoPasso && (
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
+          <TouchableOpacity
+            style={styles.proceedButton}
+            onPress={handleProceed}>
             <Text style={styles.buttonText}>Próximo Passo</Text>
           </TouchableOpacity>
         </View>
@@ -228,7 +244,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
-    
   },
 
   proceedButtonGraysimnao: {
@@ -272,17 +287,13 @@ const styles = StyleSheet.create({
   },
 
   frameView: {
-    alignSelf: "stretch",
-    flexDirection: "row",
+    alignSelf: 'stretch',
+    flexDirection: 'row',
     paddingHorizontal: 0,
     paddingVertical: 10,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
-
-  
 });
-
-
 
 export default StepTwoWine;

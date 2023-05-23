@@ -41,6 +41,7 @@
     "react-native-alert-notification": "^0.3.4",
     "react-native-axios": "^0.17.1",
     "react-native-countdown-component": "^2.7.1",
+    "react-native-countdown-timer-hooks": "^1.0.3",
     "react-native-eject": "^0.2.0",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^2.8.0",

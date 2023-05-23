@@ -10,7 +10,7 @@ interface UseWineyardScreenProps {
   navigation: any;
 }
 
-const API_URL="http://192.168.1.48:5000"
+const API_URL="http://192.168.1.49:5000"
 
 module.exports = UseWineyard = (props: UseWineyardScreenProps) => {
 
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   sensores: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.8,
     fontFamily: "Poppins",
     color: "#fff",
     textAlign: "left",
