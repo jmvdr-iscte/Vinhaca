@@ -8,7 +8,7 @@ interface StepThreeProps {
 }
 
 
-const API_URL="http://192.168.1.49:5000"
+const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepThreeWine = (props: StepThreeProps) => {
   const { dataProcessProd } = props.route.params;
@@ -20,6 +20,7 @@ module.exports = StepThreeWine = (props: StepThreeProps) => {
   const [showInput, setShowInput] = useState(true);
   const [showEstacorreto, setShowEstacorreto] = useState(true);
   const [showProximoPasso, setShowProximoPasso] = useState(false);
+  const [currentStep, setCurrentStep] = useState(3);
 
 
 
@@ -140,11 +141,38 @@ module.exports = StepThreeWine = (props: StepThreeProps) => {
           />
         </TouchableOpacity>
       
-      <Text style={styles.heading}>Step Three</Text>
+        <View style={styles.statusBar}>
+        <View style={styles.progressBar}>
+          <View
+            style={[styles.progressStep, currentStep >= 1 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 2 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 3 && styles.activeStep]}
+          />
+          <View	
+            style={[styles.progressStep, currentStep >= 4 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 5 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 6 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 7 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 8 && styles.activeStep]}
+          />
+        </View>
+      </View>
       <Text style={styles.heading}>Preparação da Cuba</Text>
 
       <View style={styles.firstText}>
-      <Text style={[styles.subHeading,styles.firstTextCuba]}>
+      <Text style={[styles.subHeading,styles.firstTextCuba, styles.centerText, styles.centerView]}>
         Deitar os {JSON.parse(dataProcessProd.Info).Água} L de água a 35° na cuba devidamente desinfetada.
       </Text>
       
@@ -158,6 +186,11 @@ module.exports = StepThreeWine = (props: StepThreeProps) => {
       {showInfo && (
         <View style={styles.screeny}>
           <View style={styles.mostoProduzido}>
+
+          <Image
+            style={[{ width: 120, height: 120, marginLeft: 10, marginTop: 10}, styles.centerView]}
+            source={require("../assets/cuba.png")}
+          />
 
           <View style={styles.mostoCorreto}>
           <Text style={[styles.subHeading, styles.quantity, { backgroundColor: temperatureColor }]}>{dataa.length > 0 ? dataa[0].Leitura : 'N/A'}°C</Text>
@@ -221,13 +254,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
   },
   subHeading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
@@ -282,9 +315,7 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     justifyContent: 'flex-end',
   },
-  firstTextCuba: {
-    fontSize: 20,
-  },
+  
 
   firstText: {
     
@@ -299,7 +330,7 @@ const styles = StyleSheet.create({
   },
   quantity: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 34,
     fontWeight: 'bold',
     backgroundColor: '#B3385B',
     paddingHorizontal: 10,
@@ -318,6 +349,48 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "flex-start",
     justifyContent: "flex-start",
+  },
+
+  statusBar: {
+    
+    backgroundColor: '#B3385B',
+    borderRadius: 8,
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  progressBar: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    backgroundColor: '#B3385B',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    
+  },
+  progressStep: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'gray',
+    
+  },
+  activeStep: {
+    backgroundColor: 'white',
+  },
+  centerText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignSelf: 'center',
+    
+  },
+
+  centerView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginVertical: 10,
   },
 
   

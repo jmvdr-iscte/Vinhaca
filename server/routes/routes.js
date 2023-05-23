@@ -277,9 +277,12 @@ router.delete("/producao/:id", function (req, res) {
     "DELETE FROM producao WHERE IDproducao = ?",
     sqlParams,
     function (error, result) {
-      if (error) console.log(error);
+      if (error) {
+        console.log(error)
+      }
       else {
         res.send("Production deleted successfully");
+        
       }
     }
   );
