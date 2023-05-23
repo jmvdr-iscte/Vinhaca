@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 
 
-const API_URL = 'http://192.168.1.48:5000';
+const API_URL = 'http://192.168.1.49:5000';
 
 sendIds = async (params) => {
 

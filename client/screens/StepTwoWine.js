@@ -60,10 +60,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
 
   const handleSimButtonClick = () => {
 
-    
     setMostoProduzido(mostoProduzido);
-    
-
     setMostrarReacaoSim(true);
     setMostrarReacaoNao(false);
     setShowEstacorreto(false);
@@ -73,8 +70,6 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
     setMostrarReacaoNao(true);
     setMostrarReacaoSim(false);
   };
-
-  
 
   const handleNextButtonClick = () => {
     if (mostoRealizado !== '') {
@@ -111,8 +106,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
 
       </View>
 
-      
-      
+
       <View>
           <TouchableOpacity style={styles.proceedButtonGray} onPress={handleButtonClick}>
             <Text style={styles.buttonText}>Prosseguir</Text>

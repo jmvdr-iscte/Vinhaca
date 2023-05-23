@@ -10,7 +10,7 @@ interface WinePageScreenProps {
   }
 
 
-  const API_URL = "http://192.168.1.48:5000"
+  const API_URL = "http://192.168.1.49:5000"
 
   
   module.exports = WinePage = (props: WinePageScreenProps) => {
@@ -52,10 +52,7 @@ interface WinePageScreenProps {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      
-
-        
-        
+  
       },
       
       box: {
@@ -71,7 +68,7 @@ interface WinePageScreenProps {
       box2: {
         width: '66%',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'centfavoer',
         flexDirection: 'row',
         
 
