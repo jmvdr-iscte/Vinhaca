@@ -15,7 +15,7 @@ interface StepSevenProps {
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = StepSevenWine = (props: StepSevenProps) => {
   const {dataProcessProd} = props.route.params;
@@ -184,7 +184,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
           Mexer todos os dias o mosto com a pá de fermentação
         </Text>
         <Text style={[styles.subHeading, styles.firstTextCuba]}>
-          Serás avisado quando a fermentação terminar
+          Poderás prosseguir quando a fermentação terminar
         </Text>
       </View>
 
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   statusBar: {
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     borderRadius: 8,
     marginBottom: 20,
     marginTop: 10,
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 10,
