@@ -62,7 +62,7 @@ def on_message(client, userdata, msg):
                 count3=0
 
         # Connect to MySQL database
-        db = pymysql.connect(host="localhost", user="root", password="", database="vinhaca_1_1")
+        db = pymysql.connect(host="localhost", user="root", password="", database="vinhaca")
 
         # Insert data into MySQL database
         cursor = db.cursor()

@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import axios from 'axios';
-import { post } from '../../server/routes/routes';
+import {post} from '../../server/routes/routes';
 
 interface StepSevenProps {
   route: any;
 }
 
-const API_URL = "http://192.168.1.87:5000";
+const API_URL = 'http://192.168.1.49:5000';
 
 module.exports = StepSevenWine = (props: StepSevenProps) => {
-  const { dataProcessProd } = props.route.params;
+  const {dataProcessProd} = props.route.params;
   const [showInfo, setShowInfo] = useState(true);
   const [mostoRealizado, setMostoRealizado] = useState('');
   const [mostrarReacaoSim, setMostrarReacaoSim] = useState(false);
@@ -57,15 +65,17 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       // Verificar se a temperatura está entre 32 e 38 graus
       const temperature = dataa.temperature ? dataa.temperature.Leitura : 0;
       const density = dataa.density ? dataa.density.Leitura : 0;
-      const isTemperatureInRange = temperature >= 20 && temperature <= 38;
-      const isDensityEqualTo1000 = density < 1000;
+      const isTemperatureInRange = temperature >= 20 && temperature <= 29;
+      const isDensityEqualTo1000 = density > 0 && density < 20;
       setShowProceedButton(isTemperatureInRange && isDensityEqualTo1000);
 
       // Definir a cor do background com base no intervalo
-      setTemperatureColor(isTemperatureInRange && isDensityEqualTo1000 ? '#77b066' : '#B3385B');
+      setTemperatureColor(
+        isTemperatureInRange && isDensityEqualTo1000 ? '#77b066' : '#B3385B',
+      );
 
       // Set other measures if available
-     /* console.log(dataa);
+      /* console.log(dataa);
       console.log(dataa.temperature ? dataa.temperature.Leitura : null);
       console.log(dataa.density ? dataa.density.Leitura : null);
       console.log(Object.keys(dataa).length);
@@ -78,7 +88,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
   const [dataProcessProd2, setDataProcessProd2] = useState({});
 
   const handleProceed = () => {
-    console.log("dataProcessProd");
+    console.log('dataProcessProd');
     console.log(dataProcessProd);
     const postData = {
       Info: dataProcessProd.Info,
@@ -86,7 +96,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
       Mosto: mostoProduzido,
-      IDVinho: dataProcessProd.IDVinho
+      IDVinho: dataProcessProd.IDVinho,
     };
 
     // Send the postData to the server
@@ -102,7 +112,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       });
 
     // Move to the next step
-    props.navigation.navigate('StepEightWine', { dataProcessProd: postData });
+    props.navigation.navigate('StepEightWine', {dataProcessProd: postData});
   };
 
   const handleSimButtonClick = () => {
@@ -131,14 +141,16 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.frameView} onPress={() => props.navigation.navigate("Production")}>
-          <Image
-            style={styles.vectorIcon}
-            resizeMode="cover"
-            source={require("../assets/vector1.png")}
-          />
-        </TouchableOpacity>
-        <View style={styles.statusBar}>
+      <TouchableOpacity
+        style={styles.frameView}
+        onPress={() => props.navigation.navigate('Production')}>
+        <Image
+          style={styles.vectorIcon}
+          resizeMode="cover"
+          source={require('../assets/vector1.png')}
+        />
+      </TouchableOpacity>
+      <View style={styles.statusBar}>
         <View style={styles.progressBar}>
           <View
             style={[styles.progressStep, currentStep >= 1 && styles.activeStep]}
@@ -149,7 +161,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
           <View
             style={[styles.progressStep, currentStep >= 3 && styles.activeStep]}
           />
-          <View	
+          <View
             style={[styles.progressStep, currentStep >= 4 && styles.activeStep]}
           />
           <View
@@ -171,43 +183,77 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
         <Text style={[styles.subHeading, styles.firstTextCuba]}>
           Mexer todos os dias o mosto com a pá de fermentação
         </Text>
-        <Text style={[styles.subHeading, styles.firstTextCuba]}>Serás avisado quando a fermentação terminar</Text>
+        <Text style={[styles.subHeading, styles.firstTextCuba]}>
+          Serás avisado quando a fermentação terminar
+        </Text>
       </View>
 
       {showInfo && (
         <View style={styles.screeny}>
           <View style={styles.mostoProduzido}>
             <View style={styles.mostoCorreto}>
-              <Text style={[styles.subHeading, styles.firstTextCuba]}>Controla a Cuba</Text>
+              <Text style={[styles.subHeading, styles.firstTextCuba]}>
+                Controla a Cuba
+              </Text>
               <View style={styles.measures}>
-                <Text style={[styles.subHeading, styles.quantity, { backgroundColor: temperatureColor }]}>
-                  {Object.keys(dataa).length > 0 ? dataa.temperature.Leitura : 'N/A'}
+                <Text
+                  style={[
+                    styles.subHeading,
+                    styles.quantity,
+                    {backgroundColor: temperatureColor},
+                  ]}>
+                  {Object.keys(dataa).length > 0
+                    ? dataa.temperature.Leitura
+                    : 'N/A'}
                   °C
                 </Text>
-                <Text style={[styles.subHeading, styles.quantity, { backgroundColor: temperatureColor }]}>
-                  {Object.keys(dataa).length > 0 ? dataa.density.Leitura : 'N/A'}
+                <Text
+                  style={[
+                    styles.subHeading,
+                    styles.quantity,
+                    {backgroundColor: temperatureColor},
+                  ]}>
+                  {Object.keys(dataa).length > 0
+                    ? dataa.density.Leitura
+                    : 'N/A'}
                   p
                 </Text>
-                <Text style={[styles.subHeading, styles.quantity, { backgroundColor: temperatureColor }]}>
-                  {Object.keys(dataa).length > 0 ? dataa.liquidLevel.Leitura : 'N/A'}
+                <Text
+                  style={[
+                    styles.subHeading,
+                    styles.quantity,
+                    {backgroundColor: temperatureColor},
+                  ]}>
+                  {Object.keys(dataa).length > 0
+                    ? dataa.liquidLevel.Leitura
+                    : 'N/A'}
                   cm
                 </Text>
               </View>
-              <TouchableOpacity style={styles.proceedButtonGraysimnao} onPress={handleGrafico}>
+              <TouchableOpacity
+                style={styles.proceedButtonGraysimnao}
+                onPress={handleGrafico}>
                 <Text style={styles.buttonText}>Ver o Gráfico</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          { !mostrarReacaoNao && !showProximoPasso && showProceedButton && (
-            <View style={[styles.buttonContainer, {marginTop:25}]}>
+          {!mostrarReacaoNao && !showProximoPasso && showProceedButton && (
+            <View style={[styles.buttonContainer, {marginTop: 25}]}>
               <Image
-          style={[{ width: 30, height: 30, marginTop: 30, marginBottom:8}, styles.centerView]}
-          source={require("../assets/certo.png")}
-        />
-              <Text style={[styles.subHeading, styles.centerView]}>Fermentação Concluída</Text>
-              
-              <TouchableOpacity style={styles.proceedButtonGraysimnao} onPress={handleSimButtonClick}>
+                style={[
+                  {width: 30, height: 30, marginTop: 30, marginBottom: 8},
+                  styles.centerView,
+                ]}
+                source={require('../assets/certo.png')}
+              />
+              <Text style={[styles.subHeading, styles.centerView]}>
+                Fermentação Concluída
+              </Text>
+
+              <TouchableOpacity
+                style={styles.proceedButtonGraysimnao}
+                onPress={handleSimButtonClick}>
                 <Text style={styles.buttonText}>Prosseguir</Text>
               </TouchableOpacity>
             </View>
@@ -215,13 +261,17 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
 
           {mostrarReacaoNao && showInput && !showProximoPasso && (
             <View style={styles.inputContainer}>
-              <Text style={styles.subHeading}>Qual foi a quantidade de mosto realizado?</Text>
+              <Text style={styles.subHeading}>
+                Qual foi a quantidade de mosto realizado?
+              </Text>
               <TextInput
                 style={styles.input}
                 onChangeText={text => setMostoRealizado(text)}
                 value={mostoRealizado}
               />
-              <TouchableOpacity style={styles.proceedButtonGray} onPress={handleNextButtonClick}>
+              <TouchableOpacity
+                style={styles.proceedButtonGray}
+                onPress={handleNextButtonClick}>
                 <Text style={styles.buttonText}>Next</Text>
               </TouchableOpacity>
             </View>
@@ -231,7 +281,9 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
 
       {(showProximoPasso || mostrarReacaoSim) && (
         <View style={styles.bottomContainer}>
-          <TouchableOpacity style={styles.proceedButton} onPress={handleProceed}>
+          <TouchableOpacity
+            style={styles.proceedButton}
+            onPress={handleProceed}>
             <Text style={styles.buttonText}>Próximo Passo</Text>
           </TouchableOpacity>
         </View>
@@ -296,14 +348,12 @@ const styles = StyleSheet.create({
   },
 
   proceedButtonGraysimnao: {
-    
     backgroundColor: 'gray',
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
     paddingHorizontal: 10,
     marginHorizontal: 10,
-    
   },
 
   bottomContainer: {
@@ -348,19 +398,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
   },
-  mostoProduzido: {
-    
-  },
+  mostoProduzido: {},
   frameView: {
-    alignSelf: "stretch",
-    flexDirection: "row",
+    alignSelf: 'stretch',
+    flexDirection: 'row',
     paddingHorizontal: 0,
     paddingVertical: 10,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
   statusBar: {
-    
     backgroundColor: '#B3385B',
     borderRadius: 8,
     marginBottom: 20,
@@ -374,14 +421,12 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 10,
-    
   },
   progressStep: {
     width: 20,
     height: 20,
     borderRadius: 10,
     backgroundColor: 'gray',
-    
   },
   activeStep: {
     backgroundColor: 'white',

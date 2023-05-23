@@ -28,7 +28,7 @@ import {Modal} from './ModalAlerts';
 
 
 
-const API_URL = 'http://192.168.1.87';
+const API_URL = 'http://192.168.1.49';
 
 
 interface GraphProps {
@@ -59,7 +59,7 @@ function Graph(props: GraphProps) {
   );
 
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
-
+/*
   onWineTransfer = async () => {
     try {
       let wineID = productionID;
@@ -83,7 +83,7 @@ function Graph(props: GraphProps) {
 fetchProductionID()
     }, []);
 
-
+*/
   useEffect(() => {
     const socket = socketIO(`${API_URL}:5001`, {
       transports: ['websocket'],
@@ -95,16 +95,14 @@ fetchProductionID()
     try {
       socket.on('message', temperature => {
         const parsedData = JSON.parse(temperature);
-        console.log(temperature);
         setTemperature(parsedData);
         if (parsedData.length > 0) {
-          if (!temperatureInterval.current) {
-            temperatureInterval.current = setInterval(() => {
+              console.log("temperature")
+              console.log(parsedData[parsedData.length - 1].y)
               checkTemperature(parsedData[parsedData.length - 1].y);
-            }, 10500);
           }
         }
-      });
+      );
     } catch (error) {
       console.log('Error:', error.message);
     }
@@ -122,11 +120,7 @@ fetchProductionID()
         const parsedData2 = JSON.parse(density);
         setDensity(parsedData2);
         if (parsedData2.length > 0) {
-          if (!densityInterval.current) {
-            densityInterval.current = setInterval(() => {
               checkDensity(parsedData2[parsedData2.length - 1].y);
-            }, 10500);
-          }
         }
       });
     } catch (error) {
@@ -142,11 +136,11 @@ fetchProductionID()
         const parsedData3 = JSON.parse(liquidLevel);
         setliquidLevel(parsedData3);
         if (parsedData3.length > 0) {
-          if (!liquidLevelInterval.current) {
-            liquidLevelInterval.current = setInterval(() => {
+         
+              console.log("liquidLevel")
+              console.log(parsedData3[parsedData3.length - 1].y)
               checkLiquidLevel(parsedData3[parsedData3.length - 1].y);
-            }, 10500);
-          }
+          
         }
       });
     } catch (error) {
@@ -173,13 +167,13 @@ fetchProductionID()
   const checkTemperature = temperatureAlert => {
     if (temperatureAlert > 30) {
       console.log(temperatureAlert);
-      setDialogTitle('Way too hot');
-      setDialogBodyText('Please get some fucking water');
+      setDialogTitle('Temperatura muito elevada');
+      setDialogBodyText('Por favor arrefeça a cuba');
       setDialogImage(require('../assets/high_temperature.png'));
       handleModal();
     } else if (temperatureAlert < 20) {
-      setDialogTitle('Way too cold');
-      setDialogBodyText('Please heat that shit up');
+      setDialogTitle('Temperatura muito baixa');
+      setDialogBodyText('Por favor aqueça a cuba');
       setDialogImage(require('../assets/low_temperature.png'));
       handleModal();
     }
@@ -188,13 +182,13 @@ fetchProductionID()
   const checkLiquidLevel = liquidLevelAlert => {
     if (liquidLevelAlert > 20) {
       console.log(liquidLevelAlert);
-      setDialogTitle('Way too high');
-      setDialogBodyText('Please get something i dont know');
+      setDialogTitle('Nivel de Liquido muito Alto');
+      setDialogBodyText('Por favor retire o liquido extra');
       setDialogImage(require('../assets/high_LiquidLevel.png'));
       handleModal();
     } else if (liquidLevelAlert < 2) {
-      setDialogTitle('Way too low');
-      setDialogBodyText('Please make it make it higher');
+      setDialogTitle('Nivel de Liquido muito Baixo');
+      setDialogBodyText('Por favor adicione mais liquido');
       setDialogImage(require('../assets/low_LiquidLevel.png'));
       handleModal();
     }
@@ -203,13 +197,13 @@ fetchProductionID()
   const checkDensity = densityAlert => {
     if (densityAlert > 20) {
       console.log(densityAlert);
-      setDialogTitle('Way too dense');
-      setDialogBodyText('Please get something i dont know');
+      setDialogTitle('Muito turvo');
+      setDialogBodyText('Por favor limpa a cuba');
       setDialogImage(require('../assets/high_density.png'));
       handleModal();
     } else if (densityAlert < 10) {
-      setDialogTitle('Way too not dense');
-      setDialogBodyText('Please make it more dense');
+      setDialogTitle('Limpo de mais');
+      setDialogBodyText('Há um problema com a turbidez');
       setDialogImage(require('../assets/low_density.png'));
       handleModal();
     }

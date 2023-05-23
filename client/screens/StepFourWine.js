@@ -9,7 +9,7 @@ interface StepFourProps {
 }
 
 
-const API_URL="http://192.168.1.87:5000"
+const API_URL="http://192.168.1.49:5000"
 
 module.exports = StepFourWine = (props: StepFourProps) => {
   const { dataProcessProd } = props.route.params;

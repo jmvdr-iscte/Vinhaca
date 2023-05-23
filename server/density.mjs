@@ -68,7 +68,7 @@ server.on("connection", (socket) => {
 
   timeChange = setInterval(
     () => fetchData((data) => socket.emit("message", JSON.stringify(data))),
-    10000 // fetch data every second
+    5000 // fetch data every second
   );
 });
 

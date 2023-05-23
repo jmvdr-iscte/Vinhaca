@@ -9,6 +9,7 @@ const app = express();
 const httpServer = http.createServer(app);
 let dataLiquidLevel = [];
 let liquidLevelCount = 0;
+
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -28,13 +29,13 @@ let currentRecordIndex = 0;
 
 function fetchData(callback) {
   connection.query(
-    `SELECT Leitura, IDMedicao FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao DESC LIMIT 1`,
+    `SELECT Leitura FROM medicao WHERE NomeSensor = 'liquidLevel' ORDER BY IDMedicao DESC LIMIT 1`,
     function (error, results, fields) {
       if (error) throw error;
-      if (results.length > 0) {
-        console.log(results);
-        console.log("results:", results[results.length - 1]);
-        console.log(results[results.length - 1].IDMedicao);
+ 
+        console.log("results:", results);
+    
+        if (results.length === 1) {
         const liquidLevel = results[results.length - 1].Leitura;
         if (dataLiquidLevel.length > 50) {
           dataLiquidLevel = dataPreparation(dataLiquidLevel);
@@ -72,7 +73,7 @@ server.on("connection", (socket) => {
 
   setInterval(
     () => fetchData((data) => socket.emit("message", JSON.stringify(data))),
-    10000
+    5000
   );
 });
 

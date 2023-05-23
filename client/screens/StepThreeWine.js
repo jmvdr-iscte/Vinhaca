@@ -8,7 +8,7 @@ interface StepThreeProps {
 }
 
 
-const API_URL="http://192.168.1.87:5000"
+const API_URL="http://192.168.1.49:5000"
 
 module.exports = StepThreeWine = (props: StepThreeProps) => {
   const { dataProcessProd } = props.route.params;
@@ -41,7 +41,7 @@ module.exports = StepThreeWine = (props: StepThreeProps) => {
 
         // Verificar se a temperatura está entre 32 e 38 graus
       const temperature = data.length > 0 ? data[0].Leitura : 0;
-      const isTemperatureInRange = temperature >= 20 && temperature <= 38;
+      const isTemperatureInRange = temperature >= 20 && temperature <= 29;
       setShowProceedButton(isTemperatureInRange);
       
 
