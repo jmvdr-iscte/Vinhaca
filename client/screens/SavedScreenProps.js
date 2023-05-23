@@ -18,7 +18,7 @@ interface SavedScreenProps {
 }
 
 
-const API_URL = 'http://192.168.1.48:5000';
+const API_URL = 'http://192.168.1.49:5000';
 
 
 module.exports = SavedScreen = (props: SavedScreenProps) => {
@@ -40,12 +40,12 @@ module.exports = SavedScreen = (props: SavedScreenProps) => {
 
   const renderFavorite = ({item}) => (
     <TouchableOpacity
-      style={{padding: 16, justifyContent: 'center', alignItems: 'center'}}>
+      style={{ justifyContent: 'center', alignItems: 'center'}}>
       <ImageBackground
         style={styles.cartaVinhosIcon}
         resizeMode="cover"
         source={require('../assets/cartavinhos1.png')}>
-        <Text style={{color: 'white', fontSize: 14, alignSelf: 'flex-start'}}>
+        <Text style={styles.vinhoTintoDoce}>
           {item.NomeVinho &&
             item.NomeVinho.replace(/(^undefined - | - undefined$)/g, '')}
         </Text>
@@ -87,15 +87,13 @@ module.exports = SavedScreen = (props: SavedScreenProps) => {
 
   return (
     <View style={styles.eMPRODUCAOView}>
-      <View style={{flex: 1}}>
+      <View style={styles.frameView}>
         <FlatList
           data={favorites}
           renderItem={renderFavorite}
           keyExtractor={item => item.IDfavorito.toString()}
-          style={{marginTop: 120}}
-          ItemSeparatorComponent={() => <View style={{height: 0}} />}
-        />
-
+        />         
+          </View>
         <View style={styles.frameView2}>
           <View style={styles.frameView1}>
             <Text style={styles.minhaProduoText}>Meus Favoritos</Text>
@@ -144,7 +142,7 @@ module.exports = SavedScreen = (props: SavedScreenProps) => {
           </Pressable>
         </View>
       </View>
-    </View>
+
   );
 };
 
@@ -353,6 +351,19 @@ const styles = StyleSheet.create({
     width: 31,
     height: 13.54,
   },
+  frameView: {
+    position: 'absolute',
+    height: '74%',
+    width: '89.17%',
+    top: '17.5%',
+    right: '5.56%',
+    bottom: '8.5%',
+    left: '5.28%',
+    flexDirection: 'row',
+    paddingTop: 20,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
   homePressable: {
     flex: 1,
     flexDirection: 'column',
@@ -368,7 +379,7 @@ const styles = StyleSheet.create({
   sensoresText: {
     position: 'relative',
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.8,
     fontFamily: 'Poppins',
     color: '#fff',
     textAlign: 'left',
@@ -388,7 +399,7 @@ const styles = StyleSheet.create({
   suporteText: {
     position: 'relative',
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.8,
     fontFamily: 'Poppins',
     color: '#fff',
     textAlign: 'left',
@@ -441,7 +452,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#56132a',
     flex: 1,
     width: '100%',
-    height: 800,
+    height: 200,
   },
 
   cartaVinhosIcon: {

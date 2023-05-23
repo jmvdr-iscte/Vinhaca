@@ -28,7 +28,7 @@ import {Modal} from './ModalAlerts';
 
 
 
-const API_URL = 'http://192.168.1.48';
+const API_URL = 'http://192.168.1.49';
 
 
 interface GraphProps {

@@ -7,7 +7,7 @@ interface StepSevenProps {
   route: any;
 }
 
-const API_URL = "http://192.168.1.48:5000";
+const API_URL = "http://192.168.1.49:5000";
 
 module.exports = StepSevenWine = (props: StepSevenProps) => {
   const { dataProcessProd } = props.route.params;
@@ -94,7 +94,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       .then(response => {
         // Handle the response if needed
         setDataProcessProd2(response.data);
-        console.log('Post successful:', response.data);
+        console.log('Post successful:step7', response.data);
       })
       .catch(error => {
         console.error('Error posting data:', error);
