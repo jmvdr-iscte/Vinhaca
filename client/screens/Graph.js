@@ -28,7 +28,7 @@ import {Modal} from './ModalAlerts';
 
 
 
-const API_URL = 'http://192.168.1.49';
+const API_URL = 'http://192.168.1.87';
 
 
 interface GraphProps {
@@ -40,7 +40,7 @@ interface GraphProps {
 function Graph(props: GraphProps) {
   
 
-  const Navegate = () => props.navigation.navigate('Home');
+  const Navegate = () => props.navigation.goBack()
 
   const liquidLevelInterval = useRef(null);
   const densityInterval = useRef(null);

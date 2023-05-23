@@ -9,7 +9,7 @@ interface StepSixProps {
 }
 
 
-const API_URL="http://192.168.1.49:5000"
+const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepSixWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;
@@ -21,6 +21,7 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
   const [showInput, setShowInput] = useState(true);
   const [showEstacorreto, setShowEstacorreto] = useState(true);
   const [showProximoPasso, setShowProximoPasso] = useState(false);
+  const [currentStep, setCurrentStep] = useState(6);
 
 
 
@@ -77,9 +78,7 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
     setTimerActive(!timerActive);
     if (!timerActive) {
       countdownRef.current && countdownRef.current.start();
-    } else {
-      countdownRef.current && countdownRef.current.restart();
-    }
+    } 
   };
 
   const handleButtonClick = () => {
@@ -162,12 +161,39 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
           />
         </TouchableOpacity>
       
-      <Text style={styles.heading}>Step Six</Text>
+        <View style={styles.statusBar}>
+        <View style={styles.progressBar}>
+          <View
+            style={[styles.progressStep, currentStep >= 1 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 2 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 3 && styles.activeStep]}
+          />
+          <View	
+            style={[styles.progressStep, currentStep >= 4 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 5 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 6 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 7 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 8 && styles.activeStep]}
+          />
+        </View>
+      </View>
       <Text style={styles.heading}>Juntar o Tanino</Text>
 
       <View style={[styles.firstText , styles.centerView]}>
       <Text style={[styles.subHeading,styles.firstTextCuba]}>
-        Junta os {JSON.parse(dataProcessProd.Info).Tanino}g de Tanino
+        Junta as {JSON.parse(dataProcessProd.Info).Tanino}g de Tanino
       </Text>
       
 
@@ -184,27 +210,45 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
           <View style={styles.mostoProduzido}>
 
           <View style={styles.mostoCorreto}>
-          <View style={[styles.subHeading, styles.quantity]}>
+          <View style={[styles.subHeading ,{display: timerFinished ? 'none' : 'flex'} ]}>
           <CountDownTimer
-          ref={countdownRef}
-          until={1}
-          size={30}
-          timerCallback={handleCountdownFinish}
-          
-          digitStyle={{ backgroundColor: '#B3385B' }}
-          digitTxtStyle={{ color: 'white', backgroundColor: '#B3385B', fontSize: 38 }}
-          timeToShow={['M', 'S']}
-          timeLabels={{ m: '', s: '' }}
-          
-          separatorStyle={{ color: 'white' }}
-          showSeparatorseparatorStyle={{ color: 'white' }}
-          showSeparator
+           ref={countdownRef}
+           timestamp={5}
+           timerCallback={handleCountdownFinish}
+           
+           containerStyle={{
+             height: 56,
+             width: 120,
+             justifyContent: 'center',
+             alignItems: 'center',
+             backgroundColor: '#B3385B',
+             paddingHorizontal: 10,
+             borderRadius: 5,
+             
+           }}
+           textStyle={{
+             fontSize: 30,
+             color: '#FFFFFF',
+             fontWeight: '500',
+             letterSpacing: 0.25,
+           }}
         />
           </View>
            
         
       
+          {!timerFinished && (
           <Text style={styles.ingredientName}>Descansando...</Text>
+          )
+}
+
+{timerFinished && (
+          <Image
+          style={[{ width: 30, height: 30, marginTop: 25, marginBottom:8}, styles.centerView]}
+          source={require("../assets/certo.png")}
+        />
+          )
+}
           
           </View>
           
@@ -217,7 +261,7 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
 
             <View style={styles.centerView} >
                 
-                <Text style={[styles.subHeading, styles.centerView]}>Aviso: Certifica-te que a temperatura está entre 22° e os 28°</Text>
+                <Text style={[styles.subHeading, styles.centerView, styles.centerText]}>Aviso: Certifica-te que a temperatura está entre 22° e os 28°</Text>
 
                 <Text style={[styles.subHeading, styles.quantity, { backgroundColor: temperatureColor }]}>{dataa.length > 0 ? dataa[0].Leitura : 'N/A'}°C</Text>
                 <View style={styles.buttonContainer}>
@@ -276,13 +320,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
   },
   subHeading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
@@ -379,6 +423,43 @@ const styles = StyleSheet.create({
       alignItems: "flex-start",
       justifyContent: "flex-start",
     },
+    statusBar: {
+    
+      backgroundColor: '#B3385B',
+      borderRadius: 8,
+      marginBottom: 20,
+      marginTop: 10,
+    },
+    progressBar: {
+      flexDirection: 'row',
+      width: '100%',
+      justifyContent: 'space-between',
+      backgroundColor: '#B3385B',
+      paddingVertical: 8,
+      paddingHorizontal: 8,
+      borderRadius: 10,
+      
+    },
+    progressStep: {
+      width: 20,
+      height: 20,
+      borderRadius: 10,
+      backgroundColor: 'gray',
+      
+    },
+    activeStep: {
+      backgroundColor: 'white',
+    },
+
+    centerText: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      alignSelf: 'center',
+      
+    },
+  
+    
 
   
 });

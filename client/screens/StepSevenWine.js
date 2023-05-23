@@ -7,7 +7,7 @@ interface StepSevenProps {
   route: any;
 }
 
-const API_URL = "http://192.168.1.49:5000";
+const API_URL = "http://192.168.1.87:5000";
 
 module.exports = StepSevenWine = (props: StepSevenProps) => {
   const { dataProcessProd } = props.route.params;
@@ -19,6 +19,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
   const [showInput, setShowInput] = useState(true);
   const [showEstacorreto, setShowEstacorreto] = useState(true);
   const [showProximoPasso, setShowProximoPasso] = useState(false);
+  const [currentStep, setCurrentStep] = useState(7);
 
   const [ultimaLeitura, setUltimaLeitura] = useState('');
   const [intervalId, setIntervalId] = useState(null);
@@ -137,7 +138,34 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
             source={require("../assets/vector1.png")}
           />
         </TouchableOpacity>
-      <Text style={styles.heading}>Step Seven</Text>
+        <View style={styles.statusBar}>
+        <View style={styles.progressBar}>
+          <View
+            style={[styles.progressStep, currentStep >= 1 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 2 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 3 && styles.activeStep]}
+          />
+          <View	
+            style={[styles.progressStep, currentStep >= 4 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 5 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 6 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 7 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 8 && styles.activeStep]}
+          />
+        </View>
+      </View>
       <Text style={styles.heading}>Fermentação</Text>
       <View style={[styles.firstText, styles.centerView]}>
         <Text style={[styles.subHeading, styles.firstTextCuba]}>
@@ -171,10 +199,13 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
             </View>
           </View>
 
-          {!mostrarReacaoSim && !mostrarReacaoNao && !showProximoPasso && showProceedButton && (
-            <View style={styles.buttonContainer}>
-              <Text style={styles.subHeading}>Parabéns!</Text>
-              <Text style={styles.subHeading}>Fermentação Concluída ✔</Text>
+          { !mostrarReacaoNao && !showProximoPasso && showProceedButton && (
+            <View style={[styles.buttonContainer, {marginTop:25}]}>
+              <Image
+          style={[{ width: 30, height: 30, marginTop: 30, marginBottom:8}, styles.centerView]}
+          source={require("../assets/certo.png")}
+        />
+              <Text style={[styles.subHeading, styles.centerView]}>Fermentação Concluída</Text>
               
               <TouchableOpacity style={styles.proceedButtonGraysimnao} onPress={handleSimButtonClick}>
                 <Text style={styles.buttonText}>Prosseguir</Text>
@@ -216,13 +247,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
   },
   subHeading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
@@ -327,5 +358,32 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "flex-start",
     justifyContent: "flex-start",
+  },
+  statusBar: {
+    
+    backgroundColor: '#B3385B',
+    borderRadius: 8,
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  progressBar: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    backgroundColor: '#B3385B',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    
+  },
+  progressStep: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'gray',
+    
+  },
+  activeStep: {
+    backgroundColor: 'white',
   },
 });

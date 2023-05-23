@@ -9,7 +9,7 @@ interface StepFourProps {
 }
 
 
-const API_URL="http://192.168.1.49:5000"
+const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepFourWine = (props: StepFourProps) => {
   const { dataProcessProd } = props.route.params;
@@ -21,6 +21,7 @@ module.exports = StepFourWine = (props: StepFourProps) => {
   const [showInput, setShowInput] = useState(true);
   const [showEstacorreto, setShowEstacorreto] = useState(true);
   const [showProximoPasso, setShowProximoPasso] = useState(false);
+  const [currentStep, setCurrentStep] = useState(4);
 
 
 
@@ -47,14 +48,13 @@ module.exports = StepFourWine = (props: StepFourProps) => {
     setTimerActive(!timerActive);
     if (!timerActive) {
       countdownRef.current && countdownRef.current.start();
-    } else {
-      countdownRef.current && countdownRef.current.restart();
     }
   };
 
   const handleButtonClick = () => {
-    setShowInfo(true);
     handleTimerPress();
+    setShowInfo(true);
+    
     
   };
 
@@ -128,14 +128,44 @@ module.exports = StepFourWine = (props: StepFourProps) => {
           />
         </TouchableOpacity>
       
-      <Text style={styles.heading}>Step Four</Text>
+        <View style={styles.statusBar}>
+        <View style={styles.progressBar}>
+          <View
+            style={[styles.progressStep, currentStep >= 1 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 2 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 3 && styles.activeStep]}
+          />
+          <View	
+            style={[styles.progressStep, currentStep >= 4 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 5 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 6 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 7 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 8 && styles.activeStep]}
+          />
+        </View>
+      </View>
       <Text style={styles.heading}>Juntar as Leveduras</Text>
 
       <View style={styles.firstText}>
-      <Text style={[styles.subHeading,styles.firstTextCuba]}>
+      <Text style={[styles.subHeading, styles.centerText, styles.centerView]}>
         Junta as {JSON.parse(dataProcessProd.Info).Leveduras}g de leveduras
       </Text>
-      
+      <Image
+            style={[{ width: 230, height: 120, marginLeft: 10, marginTop: 30}, styles.centerView]}
+            source={require("../assets/leveduras.png")}
+          />
 
       </View>
 
@@ -149,29 +179,60 @@ module.exports = StepFourWine = (props: StepFourProps) => {
         <View style={styles.screeny}>
           <View style={styles.mostoProduzido}>
 
-          <View style={styles.mostoCorreto}>
-          <View style={[styles.subHeading, styles.quantity]}>
+          <View style={[styles.mostoCorreto, styles.centerView]}>
+          <View style={[styles.subHeading, {display: timerFinished ? 'none' : 'flex', marginTop:40} ]}>
           <CountDownTimer
+          
           ref={countdownRef}
-          until={1}
-          size={30}
+          timestamp={5}
           timerCallback={handleCountdownFinish}
           
-          digitStyle={{ backgroundColor: '#B3385B' }}
-          digitTxtStyle={{ color: 'white', backgroundColor: '#B3385B', fontSize: 38 }}
-          timeToShow={['M', 'S']}
-          timeLabels={{ m: '', s: '' }}
+          containerStyle={{
+            height: 56,
+            width: 120,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#B3385B',
+            paddingHorizontal: 10,
+            borderRadius: 5,
+            
+          }}
+          textStyle={{
+            fontSize: 34,
+            color: '#FFFFFF',
+            fontWeight: '500',
+            letterSpacing: 0.25,
+          }}
+
           
-          separatorStyle={{ color: 'white' }}
-          showSeparatorseparatorStyle={{ color: 'white' }}
-          showSeparator
         />
+
+
           </View>
+
+          <View style={styles.centerView}>
            
-        
-      
+          {!timerFinished && (
           <Text style={styles.ingredientName}>Descansando...</Text>
+          )
+}
+<View style={{marginTop:30}}>
+{timerFinished && (
+  
+  <Image
+  style={[{ width: 30, height: 30, marginLeft: 10, marginTop: 30}, styles.centerView]}
+  source={require("../assets/certo.png")}
+/>
+        
           
+          )
+          
+
+          
+}
+</View>
+
+</View>
           </View>
           
 
@@ -230,13 +291,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
   },
   subHeading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
@@ -328,8 +389,48 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-start",
   },
+  statusBar: {
+    
+    backgroundColor: '#B3385B',
+    borderRadius: 8,
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  progressBar: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    backgroundColor: '#B3385B',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    
+  },
+  progressStep: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'gray',
+    
+  },
+  activeStep: {
+    backgroundColor: 'white',
+  },
 
-  
+  centerText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignSelf: 'center',
+    
+  },
+
+  centerView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop:10 ,
+  },
 
   
 });

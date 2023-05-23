@@ -18,7 +18,8 @@ interface StepOneProps {
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
+
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = StepOneWine = (props: StepOneProps) => {
   const [wineType, setWineType] = useState('');
@@ -153,6 +154,21 @@ module.exports = StepOneWine = (props: StepOneProps) => {
           <View
             style={[styles.progressStep, currentStep >= 3 && styles.activeStep]}
           />
+          <View	
+            style={[styles.progressStep, currentStep >= 4 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 5 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 6 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 7 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 8 && styles.activeStep]}
+          />
         </View>
       </View>
 
@@ -222,39 +238,43 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   statusBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingBottom: 20, // Add this line
+    
+    backgroundColor: '#B3385B',
+    borderRadius: 8,
+    marginBottom: 20,
+    marginTop: 10,
   },
   progressBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '100%',
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    backgroundColor: '#B3385B',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    
   },
   progressStep: {
     width: 20,
     height: 20,
     borderRadius: 10,
     backgroundColor: 'gray',
-    marginHorizontal: 30,
+    
   },
   activeStep: {
     backgroundColor: 'white',
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   ingredientsContainer: {
     marginBottom: 15,
   },
   subHeading: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
@@ -307,16 +327,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
+    
   },
   ingredientName: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 7,
   },
   quantity: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 26,
     fontWeight: 'bold',
     backgroundColor: '#B3385B',
     paddingHorizontal: 10,

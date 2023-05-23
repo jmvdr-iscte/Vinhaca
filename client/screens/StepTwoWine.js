@@ -15,7 +15,7 @@ interface StepTwoProps {
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = StepTwoWine = (props: StepTwoProps) => {
   const {dataProcessProd} = props.route.params;
@@ -27,6 +27,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
   const [showInput, setShowInput] = useState(true);
   const [showEstacorreto, setShowEstacorreto] = useState(true);
   const [showProximoPasso, setShowProximoPasso] = useState(false);
+  const [currentStep, setCurrentStep] = useState(2);
 
   const handleButtonClick = () => {
     setMostoProduzido((dataProcessProd.WineQuantity * 0.6).toFixed(2));
@@ -99,17 +100,48 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
         />
       </TouchableOpacity>
 
-      <Text style={styles.heading}>Step Two</Text>
+      <View style={styles.statusBar}>
+        <View style={styles.progressBar}>
+          <View
+            style={[styles.progressStep, currentStep >= 1 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 2 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 3 && styles.activeStep]}
+          />
+          <View	
+            style={[styles.progressStep, currentStep >= 4 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 5 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 6 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 7 && styles.activeStep]}
+          />
+          <View
+            style={[styles.progressStep, currentStep >= 8 && styles.activeStep]}
+          />
+        </View>
+      </View>
       <Text style={styles.heading}>Realização do Mosto</Text>
 
       <View style={styles.firstText}>
-        <Text style={styles.subHeading}>
+        <View style={styles.centerView}>
+        <Text style={[styles.subHeading, styles.centerText]}>
           Esmague as uvas de cada casta separadamente para extrair o suco...
         </Text>
-        <Text style={styles.subHeading}>
+        </View>
+        <View style={styles.centerView}>
+        <Text style={[styles.subHeading, styles.centerText]}>
           Combine os sucos de ambas as castas numa cuba grande o suficiente para
           ocupar {dataProcessProd.WineQuantity} L.
         </Text>
+        </View>
       </View>
 
       <View>
@@ -130,7 +162,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
               <Text style={styles.ingredientName}>Mosto Produzido</Text>
             </View>
             {showEstacorreto && (
-              <Text style={styles.subHeading}>Está correto?</Text>
+              <Text style={[styles.subHeading, styles.centerText, styles.centerView]}>Está correto?</Text>
             )}
           </View>
 
@@ -152,7 +184,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
           {mostrarReacaoNao && showInput && !showProximoPasso && (
             <View style={styles.inputContainer}>
               <Text style={styles.subHeading}>
-                Qual foi a quantidade de mosto realizado?
+                Quantos litros produziste?
               </Text>
               <TextInput
                 style={styles.input}
@@ -162,7 +194,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
               <TouchableOpacity
                 style={styles.proceedButtonGray}
                 onPress={handleNextButtonClick}>
-                <Text style={styles.buttonText}>Next</Text>
+                <Text style={[styles.buttonText, {paddingHorizontal:5}]}>Inserir</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -199,13 +231,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
   },
   subHeading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
@@ -266,14 +298,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   mostoCorreto: {
-    flexDirection: 'row',
+    
     alignItems: 'center',
     marginTop: 30,
     marginBottom: 10,
   },
   quantity: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 26,
     fontWeight: 'bold',
     backgroundColor: '#B3385B',
     paddingHorizontal: 10,
@@ -281,7 +313,7 @@ const styles = StyleSheet.create({
   },
   ingredientName: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 7,
   },
@@ -294,6 +326,49 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
+  statusBar: {
+    
+    backgroundColor: '#B3385B',
+    borderRadius: 8,
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  progressBar: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+    backgroundColor: '#B3385B',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    
+  },
+  progressStep: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: 'gray',
+    
+  },
+  activeStep: {
+    backgroundColor: 'white',
+  },
+  centerText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignSelf: 'center',
+    
+  },
+
+  centerView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
+
+
 });
 
 export default StepTwoWine;
