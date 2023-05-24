@@ -30,7 +30,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
   const [currentStep, setCurrentStep] = useState(2);
 
   const handleButtonClick = () => {
-    setMostoProduzido((dataProcessProd.WineQuantity * 0.6).toFixed(2));
+    setMostoProduzido((dataProcessProd.WineQuantity * 0.85).toFixed(2));
     setShowInfo(true);
   };
 

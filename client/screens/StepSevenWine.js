@@ -95,7 +95,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       Step: 8, // Set the current step
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
-      Mosto: mostoProduzido,
+      Mosto: dataProcessProd.Mosto,
       IDVinho: dataProcessProd.IDVinho,
     };
 
