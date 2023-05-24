@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   sensores: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.1,
     fontFamily: "Poppins",
     color: "#fff",
     textAlign: "left",
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
   suporte: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.1,
     fontFamily: "Poppins",
     color: "#fff",
     textAlign: "left",
