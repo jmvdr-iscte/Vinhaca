@@ -18,7 +18,7 @@ interface SugestionsProps {
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = Sugestions = (props: SugestionsProps) => {
   const [data, setData] = useState([]);
@@ -124,7 +124,7 @@ module.exports = Sugestions = (props: SugestionsProps) => {
           />
         </TouchableOpacity>
         <View style={styles.frameView1}>
-          <Text style={styles.minhaProduoText}>Sugestões de Vinhos</Text>
+          <Text style={styles.minhaProduoText}>Sugestões</Text>
         </View>
       </View>
 
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     color: '#fff',
     textAlign: 'left',
-    width: 136,
+    width: 145,
   },
   frameView1: {
     marginTop: 13,

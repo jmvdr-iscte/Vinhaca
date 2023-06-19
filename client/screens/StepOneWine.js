@@ -19,7 +19,7 @@ interface StepOneProps {
 }
 
 
-const API_URL = 'http://192.168.1.49:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = StepOneWine = (props: StepOneProps) => {
   const [wineType, setWineType] = useState('');
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     borderRadius: 8,
     marginBottom: 20,
     marginTop: 10,
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 10,

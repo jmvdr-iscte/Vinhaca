@@ -9,7 +9,7 @@ interface StepSixProps {
 }
 
 
-const API_URL="http://192.168.1.49:5000"
+const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepSixWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;
@@ -105,7 +105,7 @@ module.exports = StepSixWine = (props: StepFiveProps) => {
       Step: 7, // Set the current step
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
-      Mosto: mostoProduzido,
+      Mosto: dataProcessProd.Mosto,
       IDVinho: dataProcessProd.IDVinho
     };
   
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
     },
     statusBar: {
     
-      backgroundColor: '#B3385B',
+      backgroundColor: '#56132A',
       borderRadius: 8,
       marginBottom: 20,
       marginTop: 10,
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'space-between',
-      backgroundColor: '#B3385B',
+      backgroundColor: '#56132A',
       paddingVertical: 8,
       paddingHorizontal: 8,
       borderRadius: 10,

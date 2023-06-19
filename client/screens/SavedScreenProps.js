@@ -12,18 +12,20 @@ import {
   ScrollView,
 } from 'react-native';
 import axios from 'axios';
-
+import ProductionModal from './ProductionModal';
 interface SavedScreenProps {
   navigation: any;
 }
 
 
-const API_URL = 'http://192.168.1.49:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 
 module.exports = SavedScreen = (props: SavedScreenProps) => {
   const navigation = useNavigation();
   const [favorites, setFavorites] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false)
+  const [itemvinho, setItemvinho] = useState([])
 
   useEffect(() => {
     console.log('Fetching favorites...');
@@ -38,6 +40,23 @@ module.exports = SavedScreen = (props: SavedScreenProps) => {
       });
   }, []);
 
+  const handleOnSubmit = (prodName, wineItem) => {
+    Nome = prodName;
+    selectedWineItem = wineItem;
+  };
+
+  const handleOrderClick = () => {
+    
+    const item = { ...selectedWineItem, NomeProducao: Nome };
+    axios.post(`${API_URL}/inserirProducao`, { item })
+      .then((response) => {
+        // handle response here
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const renderFavorite = ({item}) => (
     <TouchableOpacity
       style={{ justifyContent: 'center', alignItems: 'center'}}>
@@ -49,6 +68,7 @@ module.exports = SavedScreen = (props: SavedScreenProps) => {
           {item.NomeVinho &&
             item.NomeVinho.replace(/(^undefined - | - undefined$)/g, '')}
         </Text>
+        
         <TouchableOpacity
           onPress={() => {
             console.log('Removing favorite:', item.IDfavorito);
@@ -68,9 +88,26 @@ module.exports = SavedScreen = (props: SavedScreenProps) => {
           }}>
           <Image
             source={require('../assets/deleteFavorite.png')}
-            style={{tintColor: 'white', width: 25, height: 25}}
+            style={{tintColor: 'white', width: 25, height: 25, marginLeft: 90}}
           />
         </TouchableOpacity>
+        <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => {
+          setModalVisible(true);
+          setItemvinho(item)
+          }}>
+        <Text>Produzir</Text>
+        <ProductionModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false) }
+          onSubmit={ev => {
+            console.log(itemvinho);
+            handleOnSubmit(ev, itemvinho);
+            handleOrderClick();
+          }}
+        />
+      </TouchableOpacity>
       </ImageBackground>
     </TouchableOpacity>
   );
@@ -168,7 +205,7 @@ const styles = StyleSheet.create({
   },
   vinhoTintoDoce: {
     position: 'relative',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Inter',
     color: '#fff',

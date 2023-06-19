@@ -15,7 +15,7 @@ interface StepTwoProps {
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = StepTwoWine = (props: StepTwoProps) => {
   const {dataProcessProd} = props.route.params;
@@ -30,7 +30,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
   const [currentStep, setCurrentStep] = useState(2);
 
   const handleButtonClick = () => {
-    setMostoProduzido((dataProcessProd.WineQuantity * 0.6).toFixed(2));
+    setMostoProduzido((dataProcessProd.WineQuantity * 0.85).toFixed(2));
     setShowInfo(true);
   };
 
@@ -161,9 +161,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
               </Text>
               <Text style={styles.ingredientName}>Mosto Produzido</Text>
             </View>
-            {showEstacorreto && (
-              <Text style={[styles.subHeading, styles.centerText, styles.centerView]}>Está correto?</Text>
-            )}
+            
           </View>
 
           {!mostrarReacaoSim && !mostrarReacaoNao && !showProximoPasso && (
@@ -254,7 +252,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: -10,
+   
   },
   input: {
     borderWidth: 1,
@@ -328,7 +327,7 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     borderRadius: 8,
     marginBottom: 20,
     marginTop: 10,
@@ -337,7 +336,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 10,

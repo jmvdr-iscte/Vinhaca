@@ -8,7 +8,7 @@ interface StepThreeProps {
 }
 
 
-const API_URL="http://192.168.1.49:5000"
+const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepThreeWine = (props: StepThreeProps) => {
   const { dataProcessProd } = props.route.params;
@@ -83,7 +83,7 @@ module.exports = StepThreeWine = (props: StepThreeProps) => {
       Step: 4, // Set the current step
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
-      Mosto: mostoProduzido,
+      Mosto: dataProcessProd.Mosto,
       IDVinho: dataProcessProd.IDVinho
     };
   
@@ -188,7 +188,7 @@ module.exports = StepThreeWine = (props: StepThreeProps) => {
           <View style={styles.mostoProduzido}>
 
           <Image
-            style={[{ width: 120, height: 120, marginLeft: 10, marginTop: 10}, styles.centerView]}
+            style={[{ width: 120, height: 120, marginTop: 10}, styles.centerView]}
             source={require("../assets/cuba.png")}
           />
 
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
 
   statusBar: {
     
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     borderRadius: 8,
     marginBottom: 20,
     marginTop: 10,
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 10,
