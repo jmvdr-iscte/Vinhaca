@@ -12,7 +12,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'http://10.90.11.29:5000/reviews';
+const API_URL = 'http://192.168.1.87:5000/reviews';
 
 interface starRatingProps {
   navigation: any;

@@ -15,7 +15,7 @@ interface StepEightProps {
   route: any;
 }
 
-const API_URL = 'http://10.90.11.29:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = StepEightWine = (props: StepEightProps) => {
   const {dataProcessProd} = props.route.params;

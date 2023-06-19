@@ -16,7 +16,7 @@ interface WinePageScreenProps {
   route: any;
 }
 
-const API_URL = 'http://10.90.11.29:5000';
+const API_URL = 'http://192.168.1.87:5000';
 
 module.exports = WinePage = (props: WinePageScreenProps) => {
   const [modalVisible, setModalVisible] = useState(false);
