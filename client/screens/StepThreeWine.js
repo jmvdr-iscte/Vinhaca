@@ -2,13 +2,14 @@ import React, { useState,useEffect } from 'react';
 import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios';
 import { post } from '../../server/routes/routes';
+import { LOCAL_IP } from '@env';
+
+const API_URL = `http://${LOCAL_IP}:5000`;
 
 interface StepThreeProps {
   route: any;
 }
 
-
-const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepThreeWine = (props: StepThreeProps) => {
   const { dataProcessProd } = props.route.params;

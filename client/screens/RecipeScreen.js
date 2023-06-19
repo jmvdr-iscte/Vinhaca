@@ -15,13 +15,15 @@ import axios from 'axios';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {View, Text, Pressable, TouchableOpacity} from 'react-native';
 import ProductionModal from './ProductionModal';
+import { LOCAL_IP } from '@env';
 
 
 interface RecipeScreenProps {
   navigation: any;
 }
 
-const API_URL = "http://192.168.1.87:5000"
+const API_URL = `http://${LOCAL_IP}:5000`;
+
 
 
 module.exports = RecipeScreen = (props: RecipeScreenProps) => {

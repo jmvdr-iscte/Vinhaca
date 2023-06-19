@@ -4,12 +4,15 @@ import axios from 'axios';
 import { post } from '../../server/routes/routes';
 import CountDownTimer from 'react-native-countdown-timer-hooks';
 
+import { LOCAL_IP } from '@env';
+
+const API_URL = `http://${LOCAL_IP}:5000`;
+
 interface StepSixProps {
   route: any;
 }
 
 
-const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepSixWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;

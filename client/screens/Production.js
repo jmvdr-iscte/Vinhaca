@@ -14,12 +14,17 @@ import { useState, useEffect } from "react";
 import { FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
+import { LOCAL_IP } from '@env';
 
 interface ProductionProps {
   navigation: any;
 }
 
-const API_URL = 'http://192.168.1.87:5000'
+
+const API_URL = `http://${LOCAL_IP}:5000`;
+
+
+
 
 
 module.exports = Production = (props: ProductionProps) => {

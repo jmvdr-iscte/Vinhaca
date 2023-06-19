@@ -3,13 +3,14 @@ import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image } fr
 import axios from 'axios';
 import { post } from '../../server/routes/routes';
 import CountDownTimer from 'react-native-countdown-timer-hooks';
+import { LOCAL_IP } from '@env';
+
+const API_URL = `http://${LOCAL_IP}:5000`;
 
 interface StepFourProps {
   route: any;
 }
 
-
-const API_URL="http://192.168.1.87:5000"
 
 module.exports = StepFourWine = (props: StepFourProps) => {
   const { dataProcessProd } = props.route.params;

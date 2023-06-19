@@ -12,13 +12,14 @@ import {
   ScrollView,
 } from 'react-native';
 import axios from 'axios';
+import { LOCAL_IP } from '@env';
 import ProductionModal from './ProductionModal';
+
 interface SavedScreenProps {
   navigation: any;
 }
 
-
-const API_URL = 'http://192.168.1.87:5000';
+const API_URL = `http://${LOCAL_IP}:5000`;
 
 
 module.exports = SavedScreen = (props: SavedScreenProps) => {

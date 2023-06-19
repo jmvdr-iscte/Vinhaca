@@ -40,6 +40,7 @@
     "react-native": "0.70.6",
     "react-native-alert-notification": "^0.3.4",
     "react-native-axios": "^0.17.1",
+    "react-native-config": "^1.5.1",
     "react-native-countdown-component": "^2.7.1",
     "react-native-countdown-timer-hooks": "^1.0.3",
     "react-native-eject": "^0.2.0",
@@ -67,6 +68,7 @@
     "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "0.72.3",
+    "react-native-dotenv": "^3.4.9",
     "react-test-renderer": "18.1.0"
   },
   "jest": {
