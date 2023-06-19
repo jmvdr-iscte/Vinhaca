@@ -161,9 +161,7 @@ module.exports = StepTwoWine = (props: StepTwoProps) => {
               </Text>
               <Text style={styles.ingredientName}>Mosto Produzido</Text>
             </View>
-            {showEstacorreto && (
-              <Text style={[styles.subHeading, styles.centerText, styles.centerView]}>Está correto?</Text>
-            )}
+            
           </View>
 
           {!mostrarReacaoSim && !mostrarReacaoNao && !showProximoPasso && (
@@ -254,7 +252,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: -10,
+   
   },
   input: {
     borderWidth: 1,

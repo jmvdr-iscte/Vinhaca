@@ -203,7 +203,7 @@ module.exports = UseWineyard = (props: UseWineyardScreenProps) => {
               <FlatList
                 data={listItems}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.IDCasta}
+                keyExtractor={(item) => item.id.toString()}
               />
             </View>
 
