@@ -93,6 +93,8 @@ module.exports = Production = (props: ProductionProps) => {
   };
 
   const oneWine = ({ item }) => (
+   
+   
     <TouchableOpacity onPress={() => handleWinePageClick({ item })}>
       <ImageBackground
         style={styles.cartaVinhosIcon}
@@ -101,7 +103,8 @@ module.exports = Production = (props: ProductionProps) => {
         justifyContent="center"
         alignItems="center">
         <Text style={styles.vinhoTintoDoce}>
-          <Text style={styles.vinhoText}>{item.NomeProducao}</Text>
+          <Text >{item.NomeProducao}</Text> {"\n"}
+          <Text style={styles.vinhoText}>{item.NomeVinho}</Text>
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -193,8 +196,10 @@ const styles = StyleSheet.create({
     marginLeft: 58,
   },
   vinhoText: {
+    fontSize: 15,
     marginBlockStart: 0,
     marginBlockEnd: 0,
+
   },
   tintoDoce: {
     margin: 0,
@@ -206,7 +211,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     color: '#fff',
     textAlign: 'left',
-    width: 128,
+    width: 250,
+
+    
   },
   cartaVinhosIcon: {
     alignSelf: 'stretch',
