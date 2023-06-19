@@ -51,12 +51,8 @@ module.exports = Profile = (props: ProfileScreenProps) => {
           <TouchableOpacity style={styles.oBFormsDefinies}>
             <Text style={styles.name}>Definições</Text>
           </TouchableOpacity >
-          <TouchableOpacity style={[styles.oBFormsDefinies1, styles.mt1]}>
-            <Text style={styles.name1}>Alertas</Text>
-          </TouchableOpacity >
-          <TouchableOpacity style={[styles.oBFormsDefinies2, styles.mt1]}>
-            <Text style={styles.name2}>Histórico</Text>
-          </TouchableOpacity >
+         
+          
           <TouchableOpacity 
             style={[styles.oBFormsDefinies3, styles.mt1]}
             onPress={() => props.navigation.navigate('SavedScreenProps')}
@@ -155,7 +151,7 @@ const styles = StyleSheet.create({
   },
   name: {
     position: "relative",
-    fontSize: 14,
+    fontSize: 20,
     lineHeight: 28,
     fontFamily: "Inter",
     color: "#fff",
@@ -218,7 +214,7 @@ const styles = StyleSheet.create({
   },
   name3: {
     position: "relative",
-    fontSize: 14,
+    fontSize: 20,
     lineHeight: 28,
     fontFamily: "Inter",
     color: "#fff",
@@ -239,7 +235,7 @@ const styles = StyleSheet.create({
   },
   name4: {
     position: "relative",
-    fontSize: 14,
+    fontSize: 20,
     lineHeight: 28,
     fontFamily: "Inter",
     color: "#fff",

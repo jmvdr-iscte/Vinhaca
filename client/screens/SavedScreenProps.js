@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   vinhoTintoDoce: {
     position: 'relative',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Inter',
     color: '#fff',

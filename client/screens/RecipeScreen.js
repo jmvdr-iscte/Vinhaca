@@ -114,6 +114,8 @@ module.exports = RecipeScreen = (props: RecipeScreenProps) => {
       <Text style={styles.vinhoTintoDoce}>
         <Text style={styles.vinhoText}>{item.NomeVinho}</Text>
       </Text>
+
+      
   
 
       <TouchableOpacity
@@ -123,16 +125,25 @@ module.exports = RecipeScreen = (props: RecipeScreenProps) => {
         }}>
         <Image
 source={require('../assets/favorite.png')}
-style={{tintColor: 'white', width: 25, height: 25, marginLeft: 110}}
+style={{tintColor: 'white', width: 25, height: 25, marginLeft: 90}}
 />
       </TouchableOpacity>
-      <TouchableOpacity
+      
+
+      <View>
+      <View style={styles.rating}>
+        
+              <Text style={{fontSize: 22, color: 'white', textAlign:"center", marginBottom:-1}}>{item.Rating.toFixed(1)}</Text>
+              <Text style={{fontSize: 20, color: '#D3D3D3', marginBottom:2}}>★</Text>
+            </View>
+        
+      <TouchableOpacity 
         style={styles.buttonContainer}
         onPress={() => {
           setModalVisible(true);
           setItemvinho(item)
           }}>
-        <Text>Produzir</Text>
+        <Text >Produzir</Text>
         <ProductionModal
           visible={modalVisible}
           onClose={() => setModalVisible(false) }
@@ -143,10 +154,12 @@ style={{tintColor: 'white', width: 25, height: 25, marginLeft: 110}}
           }}
         />
       </TouchableOpacity>
+      </View>
   
       
     </ImageBackground>
     </TouchableOpacity>
+    
   );
 
   return (
@@ -422,7 +435,7 @@ const styles = StyleSheet.create({
   },
   vinhoTintoDoce: {
     position: 'relative',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Inter',
     color: '#fff',
@@ -547,4 +560,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 4,
   },
+  rating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 3,
+    
+  },
+
 });

@@ -162,10 +162,7 @@ module.exports = StepFourWine = (props: StepFourProps) => {
       <Text style={[styles.subHeading, styles.centerText, styles.centerView]}>
         Junta as {JSON.parse(dataProcessProd.Info).Leveduras}g de Leveduras
       </Text>
-      <Image
-            style={[{ width: 230, height: 120, marginTop: 30}, styles.centerView]}
-            source={require("../assets/leveduras.png")}
-          />
+      
 
       </View>
 
