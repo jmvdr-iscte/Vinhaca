@@ -124,10 +124,12 @@ module.exports = RecipeScreen = (props: RecipeScreenProps) => {
         onPress={() => {
           setFavorites(prev => [...prev]);
           handleFavoriteClick(item);
-        }}>
+        }}
+        style={{marginLeft: 90}}
+      >
         <Image
 source={require('../assets/favorite.png')}
-style={{tintColor: 'white', width: 25, height: 25, marginLeft: 90}}
+style={{tintColor: 'white', width: 25, height: 25}}
 />
       </TouchableOpacity>
       
@@ -135,8 +137,8 @@ style={{tintColor: 'white', width: 25, height: 25, marginLeft: 90}}
       <View>
       <View style={styles.rating}>
         
-              <Text style={{fontSize: 22, color: 'white', textAlign:"center", marginBottom:-1}}>{item.Rating.toFixed(1)}</Text>
-              <Text style={{fontSize: 20, color: '#D3D3D3', marginBottom:2}}>★</Text>
+              <Text style={{fontSize: 20, color: 'white', textAlign:"center", marginBottom:-1}}>{item.Rating.toFixed(1)}</Text>
+              <Text style={{fontSize: 18, color: '#D3D3D3', marginBottom:2}}>★</Text>
             </View>
         
       <TouchableOpacity 
@@ -145,7 +147,7 @@ style={{tintColor: 'white', width: 25, height: 25, marginLeft: 90}}
           setModalVisible(true);
           setItemvinho(item)
           }}>
-        <Text >Produzir</Text>
+        <Text style={{color: 'white'}}>Produzir</Text>
         <ProductionModal
           visible={modalVisible}
           onClose={() => setModalVisible(false) }
@@ -436,13 +438,13 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   vinhoTintoDoce: {
-    position: 'relative',
+    
     fontSize: 18,
     fontWeight: '600',
     fontFamily: 'Inter',
     color: '#fff',
     textAlign: 'left',
-    width: 128,
+    width: 150,
   },
   cartaVinhosIcon: {
     alignSelf: 'stretch',
@@ -557,7 +559,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: 'gray',
     borderRadius: 5,
     paddingHorizontal: 5,
     paddingVertical: 4,

@@ -367,17 +367,18 @@ router.get("/producao", function (req, res) {
   sqlParams = [Utilizadorid];
 
   con.query(
-    "select * from producao where Utilizadorid= ?",
+    "SELECT p.*, v.* FROM producao p INNER JOIN vinho v ON p.IDVinho = v.IDVinho WHERE p.Utilizadorid = ?",
     sqlParams,
     function (error, rows, fields) {
-      //con.query('select * from vinho where IDVinho in (select IDVinho from producao where Utilizadorid = ?)', sqlParams, function(error, rows, fields){
-      if (error) console.log(error);
-      else {
+      if (error) {
+        console.log(error);
+      } else {
         res.send(rows);
       }
     }
   );
 });
+
 
 // will match any other path
 router.use("/", (req, res, next) => {

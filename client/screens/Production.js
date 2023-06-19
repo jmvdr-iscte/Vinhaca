@@ -39,6 +39,8 @@ module.exports = Production = (props: ProductionProps) => {
       .then((resp) => {
         setData(resp)
       })
+      
+      
   });
 
 
@@ -98,6 +100,9 @@ module.exports = Production = (props: ProductionProps) => {
   };
 
   const oneWine = ({ item }) => (
+  
+    
+   
     <TouchableOpacity onPress={() => handleWinePageClick({ item })}>
       <ImageBackground
         style={styles.cartaVinhosIcon}
@@ -106,21 +111,24 @@ module.exports = Production = (props: ProductionProps) => {
         justifyContent="center"
         alignItems="center">
         <Text style={styles.vinhoTintoDoce}>
-          <Text style={styles.vinhoText}>{item.NomeProducao}</Text>
+          <Text >{item.NomeProducao}</Text> {"\n"}
+          <Text style={styles.vinhoText}>{item.NomeVinho}</Text>
+
         </Text>
-        <TouchableOpacity
-          onPress={() => {
-            setFavorites(prev => [...prev]);
-            handleFavoriteClick(item);
-          }}>
-          <Image
-            source={require('../assets/favorite.png')}
-            style={{
-              tintColor: 'white',
-              width: 25, height: 25
-            }}
-          />
-        </TouchableOpacity>
+
+        <View style={styles.buttonContainer}>
+        <Text style={{ color: 'white' }}>Passo {' '}
+  {(() => {
+    try {
+      const parsedInfo = JSON.parse(item.Info);
+      const stepValue = parsedInfo.Step;
+      return stepValue !== undefined ? stepValue : 1;
+    } catch (error) {
+      return 1;
+    }
+  })()}
+</Text>
+        </View>
       </ImageBackground>
     </TouchableOpacity>
   );
@@ -198,8 +206,10 @@ const styles = StyleSheet.create({
     marginLeft: 58,
   },
   vinhoText: {
+    fontSize: 15,
     marginBlockStart: 0,
     marginBlockEnd: 0,
+
   },
   tintoDoce: {
     margin: 0,
@@ -211,7 +221,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
     color: '#fff',
     textAlign: 'left',
-    width: 128,
+    width: 250,
+
+    
   },
   cartaVinhosIcon: {
     alignSelf: 'stretch',
@@ -495,11 +507,15 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: 'gray', // Green color
     borderRadius: 5,
     paddingHorizontal: 5,
     paddingVertical: 4,
   },
+
+    
+    
+    
 });
 
 export default Production;

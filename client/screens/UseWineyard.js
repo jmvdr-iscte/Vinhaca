@@ -467,8 +467,7 @@ const styles = StyleSheet.create({
   oBFormsAdicionar: {
     alignSelf: "stretch",
     borderRadius: 5,
-    borderStyle: "solid",
-    borderWidth: 1,
+
     height: 40,
     flexShrink: 0,
     flexDirection: "column",
