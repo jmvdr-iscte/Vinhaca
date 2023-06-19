@@ -25,22 +25,16 @@ import {
 import {Button} from 'react-native-paper';
 import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
+import {LOCAL_IP} from '@env';
 
-
-
-const API_URL = 'http://192.168.1.49';
-
+const API_URL = `http://${LOCAL_IP}`;
 
 interface GraphProps {
   navigation: any;
 }
 
-
-
 function Graph(props: GraphProps) {
-  
-
-  const Navegate = () => props.navigation.goBack()
+  const Navegate = () => props.navigation.goBack();
 
   const liquidLevelInterval = useRef(null);
   const densityInterval = useRef(null);
@@ -59,7 +53,7 @@ function Graph(props: GraphProps) {
   );
 
   const handleModal = () => setIsModalVisible(() => !isModalVisible);
-/*
+  /*
   onWineTransfer = async () => {
     try {
       let wineID = productionID;
@@ -97,12 +91,11 @@ fetchProductionID()
         const parsedData = JSON.parse(temperature);
         setTemperature(parsedData);
         if (parsedData.length > 0) {
-              console.log("temperature")
-              console.log(parsedData[parsedData.length - 1].y)
-              checkTemperature(parsedData[parsedData.length - 1].y);
-          }
+          console.log('temperature');
+          console.log(parsedData[parsedData.length - 1].y);
+          checkTemperature(parsedData[parsedData.length - 1].y);
         }
-      );
+      });
     } catch (error) {
       console.log('Error:', error.message);
     }
@@ -120,7 +113,7 @@ fetchProductionID()
         const parsedData2 = JSON.parse(density);
         setDensity(parsedData2);
         if (parsedData2.length > 0) {
-              checkDensity(parsedData2[parsedData2.length - 1].y);
+          checkDensity(parsedData2[parsedData2.length - 1].y);
         }
       });
     } catch (error) {
@@ -136,11 +129,9 @@ fetchProductionID()
         const parsedData3 = JSON.parse(liquidLevel);
         setliquidLevel(parsedData3);
         if (parsedData3.length > 0) {
-         
-              console.log("liquidLevel")
-              console.log(parsedData3[parsedData3.length - 1].y)
-              checkLiquidLevel(parsedData3[parsedData3.length - 1].y);
-          
+          console.log('liquidLevel');
+          console.log(parsedData3[parsedData3.length - 1].y);
+          checkLiquidLevel(parsedData3[parsedData3.length - 1].y);
         }
       });
     } catch (error) {

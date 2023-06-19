@@ -10,12 +10,14 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import {post} from '../../server/routes/routes';
+import { LOCAL_IP } from '@env';
+
+const API_URL = `http://${LOCAL_IP}:5000`;
 
 interface StepSevenProps {
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
 
 module.exports = StepSevenWine = (props: StepSevenProps) => {
   const {dataProcessProd} = props.route.params;

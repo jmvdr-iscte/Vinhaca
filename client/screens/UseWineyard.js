@@ -3,14 +3,16 @@ import { Image, StyleSheet, Text, View, Pressable, TouchableOpacity, Modal, Butt
 import { useState, useEffect } from 'react';
 import { white } from "react-native-paper/lib/typescript/styles/colors";
 import axios from 'axios';
+import { LOCAL_IP } from '@env';
 
+const API_URL = `http://${LOCAL_IP}:5000`;
 
 
 interface UseWineyardScreenProps {
   navigation: any;
 }
 
-const API_URL="http://192.168.1.49:5000"
+
 
 module.exports = UseWineyard = (props: UseWineyardScreenProps) => {
 
@@ -203,7 +205,7 @@ module.exports = UseWineyard = (props: UseWineyardScreenProps) => {
               <FlatList
                 data={listItems}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.IDCasta}
+                keyExtractor={(item) =>item.id.toString()}
               />
             </View>
 

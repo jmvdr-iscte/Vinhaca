@@ -51,7 +51,7 @@ const ContactUs = (props: ContactUsProps) => {
       first_name: firstName,
       last_name: lastName,
     };
-    console.log(templateParams);
+    
     if (title == '' || email == '' || content == '') {
       Alert.alert('Error: email, subject and title are mandatory fields');
     } else {

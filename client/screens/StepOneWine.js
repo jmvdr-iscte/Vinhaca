@@ -11,6 +11,10 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
+import { LOCAL_IP } from '@env';
+
+const API_URL = `http://${LOCAL_IP}:5000`;
+
 interface StepOneProps {
   navigation: any;
   onNextStep: any;
@@ -19,7 +23,7 @@ interface StepOneProps {
 }
 
 
-const API_URL = 'http://192.168.1.49:5000';
+
 
 module.exports = StepOneWine = (props: StepOneProps) => {
   const [wineType, setWineType] = useState('');

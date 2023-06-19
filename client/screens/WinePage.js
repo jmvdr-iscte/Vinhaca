@@ -10,13 +10,16 @@ import {
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import { LOCAL_IP } from '@env';
+
+const API_URL = `http://${LOCAL_IP}:5000`;
 
 interface WinePageScreenProps {
   navigation: any;
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
+
 
 module.exports = WinePage = (props: WinePageScreenProps) => {
   const [modalVisible, setModalVisible] = useState(false);

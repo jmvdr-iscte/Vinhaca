@@ -12,13 +12,15 @@ import {useState, useEffect} from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import ProductionModal from './ProductionModal';
 import axios from 'axios';
+import { LOCAL_IP } from '@env';
+
+const API_URL = `http://${LOCAL_IP}:5000`;
 
 interface SugestionsProps {
   navigation: any;
   route: any;
 }
 
-const API_URL = 'http://192.168.1.49:5000';
 
 module.exports = Sugestions = (props: SugestionsProps) => {
   const [data, setData] = useState([]);
