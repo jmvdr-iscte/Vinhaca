@@ -15,6 +15,7 @@ import { LOCAL_IP } from '@env';
 
 const API_URL = `http://${LOCAL_IP}:5000/reviews`;
 
+
 interface starRatingProps {
   navigation: any;
 }

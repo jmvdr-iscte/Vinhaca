@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import axios from 'axios';
 import { LOCAL_IP } from '@env';
 
@@ -19,6 +20,8 @@ sendIds = async params => {
     // console.log(response);
   });
 };
+
+
 
 interface AuthScreenProps {
   navigation: any;

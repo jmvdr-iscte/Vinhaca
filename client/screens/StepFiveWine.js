@@ -4,14 +4,12 @@ import axios from 'axios';
 import { post } from '../../server/routes/routes';
 import CountDownTimer from 'react-native-countdown-timer-hooks';
 import { LOCAL_IP } from '@env';
+
 const API_URL = `http://${LOCAL_IP}:5000`;
 
 interface StepFiveProps {
   route: any;
 }
-
-
-
 
 module.exports = StepFiveWine = (props: StepFiveProps) => {
   const { dataProcessProd } = props.route.params;
@@ -71,7 +69,7 @@ module.exports = StepFiveWine = (props: StepFiveProps) => {
       Step: 6, // Set the current step
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
-      Mosto: mostoProduzido,
+      Mosto: dataProcessProd.Mosto,
       IDVinho: dataProcessProd.IDVinho
     };
   
@@ -169,7 +167,7 @@ module.exports = StepFiveWine = (props: StepFiveProps) => {
       </Text>
       <View >
       <Image
-            style={[{ width: 80, height: 110, marginLeft: 10, marginTop: 30, marginBottom:10}, styles.centerView]}
+            style={[{ width: 80, height: 110, marginTop: 30, marginBottom:10}, styles.centerView]}
             source={require("../assets/uvas.png")}
           />
       </View>
@@ -394,7 +392,7 @@ const styles = StyleSheet.create({
     },
     statusBar: {
     
-      backgroundColor: '#B3385B',
+      backgroundColor: '#56132A',
       borderRadius: 8,
       marginBottom: 20,
       marginTop: 10,
@@ -403,7 +401,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'space-between',
-      backgroundColor: '#B3385B',
+      backgroundColor: '#56132A',
       paddingVertical: 8,
       paddingHorizontal: 8,
       borderRadius: 10,

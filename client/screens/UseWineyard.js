@@ -13,7 +13,6 @@ interface UseWineyardScreenProps {
 }
 
 
-
 module.exports = UseWineyard = (props: UseWineyardScreenProps) => {
 
   const [data, setData] = useState([])
@@ -205,7 +204,8 @@ module.exports = UseWineyard = (props: UseWineyardScreenProps) => {
               <FlatList
                 data={listItems}
                 renderItem={renderItem}
-                keyExtractor={(item) =>item.id.toString()}
+
+                keyExtractor={(item) => item.id.toString()}
               />
             </View>
 
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   home: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.1,
     fontWeight: "700",
     fontFamily: "Poppins",
     color: "#fff",
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   sensores: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.8,
+    letterSpacing: 0.1,
     fontFamily: "Poppins",
     color: "#fff",
     textAlign: "left",
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   suporte: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.1,
     fontFamily: "Poppins",
     color: "#fff",
     textAlign: "left",

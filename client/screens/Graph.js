@@ -27,7 +27,9 @@ import {MyEnum} from '../enums/Enums.js';
 import {Modal} from './ModalAlerts';
 import {LOCAL_IP} from '@env';
 
+
 const API_URL = `http://${LOCAL_IP}`;
+
 
 interface GraphProps {
   navigation: any;

@@ -20,7 +20,6 @@ interface WinePageScreenProps {
 }
 
 
-
 module.exports = WinePage = (props: WinePageScreenProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemvinho, setItemvinho] = useState([]);

@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   homeText: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.1,
     fontWeight: "700",
     fontFamily: "Poppins",
     color: "#fff",
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
   sensoresText: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.1,
     fontFamily: "Poppins",
     color: "#fff",
     textAlign: "left",
@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
   suporteText: {
     position: "relative",
     fontSize: 9,
-    letterSpacing: 0.9,
+    letterSpacing: 0.1,
     fontFamily: "Poppins",
     color: "#fff",
     textAlign: "left",

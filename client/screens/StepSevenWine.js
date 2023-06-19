@@ -97,7 +97,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
       Step: 8, // Set the current step
       IDProducao: dataProcessProd.IDProducao, // Add the IDProducao to postData
       WineQuantity: dataProcessProd.WineQuantity,
-      Mosto: mostoProduzido,
+      Mosto: dataProcessProd.Mosto,
       IDVinho: dataProcessProd.IDVinho,
     };
 
@@ -186,7 +186,7 @@ module.exports = StepSevenWine = (props: StepSevenProps) => {
           Mexer todos os dias o mosto com a pá de fermentação
         </Text>
         <Text style={[styles.subHeading, styles.firstTextCuba]}>
-          Serás avisado quando a fermentação terminar
+          Poderás prosseguir quando a fermentação terminar
         </Text>
       </View>
 
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   statusBar: {
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     borderRadius: 8,
     marginBottom: 20,
     marginTop: 10,
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    backgroundColor: '#B3385B',
+    backgroundColor: '#56132A',
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 10,
