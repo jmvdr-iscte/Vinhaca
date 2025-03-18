@@ -37,7 +37,7 @@
     "npm": "^9.1.2",
     "qs": "^6.11.1",
     "react": "18.1.0",
-    "react-native": "0.70.6",
+    "react-native": "0.73.0",
     "react-native-alert-notification": "^0.3.4",
     "react-native-axios": "^0.17.1",
     "react-native-config": "^1.5.1",
